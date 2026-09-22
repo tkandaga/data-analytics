@@ -44,6 +44,10 @@
     box-shadow:4px 4px 0 var(--yellow);
     flex-shrink:0;
   }
+  .ut-logo{
+    height:46px;border-radius:10px;object-fit:contain;flex-shrink:0;
+    box-shadow:4px 4px 0 var(--yellow);background:#000;
+  }
   .titles h1{font-size:22px;letter-spacing:.5px;}
   .titles .sub{font-size:13px;color:var(--muted);font-weight:500;margin-top:2px;}
   .head-right{margin-left:auto;text-align:right;font-size:12px;color:var(--muted);}
@@ -196,13 +200,13 @@
 <body>
 
 <header>
-  <div class="logo">C</div>
+  <img class="ut-logo" src="https://media.base44.com/images/public/6ab290c11265ad626905aac0/b38dd8bff_Logo_UT-transparan.png" alt="Logo Universitas Terbuka">
   <div class="titles">
     <h1>CHEMISTRY DATA ANALYTICS</h1>
     <div class="sub">Dari Fenomena Menuju Data — Dari Data Menuju Wawasan Matematis</div>
   </div>
   <div class="head-right">
-    <div><b>Universitas Nusantara</b></div>
+    <div><b>Universitas Terbuka</b></div>
     <div>Pembelajaran STEM Kimia · Sesi 1</div>
   </div>
 </header>
@@ -745,7 +749,7 @@
     var ctx=contextValues();
     var r2str=m.r2.toFixed(2);
     var quality = m.r2>=0.9?"sangat baik":(m.r2>=0.7?"cukup baik":(m.r2>=0.4?"lemah":"buruk"));
-    var modelEq='<span class="mi"><i>h</i>(<i>t</i>) = <i>H</i>(1 − <span class="up">e</span><sup>−<i>k</i><i>t</i></sup>)</span>';
+    var modelEq='<span class="mi"><i>h</i>(<i>t</i>) = '+H.toFixed(2)+'(1 − <span class="up">e</span><sup>−'+k.toFixed(3)+'<i>t</i></sup>)</span>';
     var Hm='<span class="mi"><i>H</i> = '+H.toFixed(2)+' cm</span>';
     var km='<span class="mi"><i>k</i> = '+k.toFixed(3)+' s<sup>−1</sup></span>';
     var r2m='<span class="mi"><i>R</i><sup>2</sup> = '+r2str+'</span>';
