@@ -58,13 +58,13 @@
     display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:18px 0;
   }
   .metric{
-    background:var(--blue-soft-2);border:1px solid var(--line);border-left:5px solid var(--blue);
+    background:var(--blue);border:1px solid var(--blue-dark);border-left:5px solid var(--yellow);
     border-radius:10px;padding:12px 14px;position:relative;
   }
-  .metric .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:600;}
-  .metric .val{font-size:24px;font-weight:800;color:var(--blue);margin-top:2px;}
-  .metric .val.neg{color:var(--red);}
-  .metric .val.ok{color:var(--green);}
+  .metric .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.85);font-weight:600;}
+  .metric .val{font-size:24px;font-weight:800;color:#fff;margin-top:2px;}
+  .metric .val.neg{color:#ffb3ad;}
+  .metric .val.ok{color:#dff5e3;}
 
   /* Layout grid */
   .grid{
