@@ -279,7 +279,7 @@
     <div class="right">
       <div class="panel">
         <h3>Model Matematis</h3>
-        <div class="formula"><span class="mi"><i>h</i>(<i>t</i>)&nbsp;=&nbsp;<i>H</i>(1&nbsp;−&nbsp;<span class="up">e</span><sup>−<i>k</i><i>t</i></sup>)</span></div>
+        <div class="formula" id="formulaBox"><span class="mi"><i>h</i>(<i>t</i>)&nbsp;=&nbsp;<i>H</i>(1&nbsp;−&nbsp;<span class="up">e</span><sup>−<i>k</i><i>t</i></sup>)</span></div>
 
         <div class="param">
           <div class="row"><span>Tinggi Asimtot</span><span class="mi"><i>H</i>&nbsp;=&nbsp;<span id="Hval">18.00</span></span></div>
@@ -774,6 +774,7 @@
     var r2el=$("m-r2");r2el.textContent=m.r2.toFixed(2);r2el.className="val"+(m.r2<0?" neg":"");
     $("m-rmse").textContent=m.rmse.toFixed(2);
     var tolel=$("m-tol");tolel.textContent=m.tol.toFixed(0)+"%";tolel.className="val"+(m.tol>=80?" ok":"");
+    $("formulaBox").innerHTML='<span class="mi"><i>h</i>(<i>t</i>) = '+H.toFixed(2)+'(1 − <span class="up">e</span><sup>−'+k.toFixed(3)+'<i>t</i></sup>)</span>';
     drawMain();
     drawResiduals(m);
     buildInterpretation(m);
