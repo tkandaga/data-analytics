@@ -3,788 +3,1563 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chemistry Data Analytics</title>
+<title>Mathematical Modeling Dashboard</title>
 <style>
   :root{
-    --blue:#1A59A0;
-    --blue-dark:#143e6e;
-    --blue-soft:#D1E2F5;
-    --blue-soft-2:#EAF2FB;
-    --yellow:#FFC82D;
-    --yellow-soft:#FFE9A8;
-    --ink:#212121;
-    --muted:#5b6b7a;
-    --line:#cdddee;
-    --bg:#ffffff;
-    --panel:#ffffff;
-    --red:#e74c3c;
-    --green:#2e8b57;
+    --purple:#4b2cbf;
+    --purple-dark:#3a1f96;
+    --purple-soft:#efeafc;
+    --purple-line:#d9cef7;
+    --yellow:#f1c40f;
+    --blue:#0984e3;
+    --green:#00b894;
+    --orange:#e67e22;
+    --violet:#6c5ce7;
+    --ink:#2d3436;
+    --ink-head:#1e272e;
+    --muted:#7f8c8d;
+    --line:#dfe6e9;
+    --bg:#f4f6f9;
+    --card:#ffffff;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:var(--bg);
-    color:var(--ink);
-    line-height:1.5;
+    background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;
     -webkit-font-smoothing:antialiased;
   }
-  h1,h2,h3,h4{margin:0;font-weight:700;color:var(--blue);}
-  .wrap{max-width:1500px;margin:0 auto;padding:18px 22px 40px;}
+  h1,h2,h3{margin:0;}
 
-  /* Header */
-  header{
-    display:flex;align-items:center;gap:18px;flex-wrap:wrap;
-    padding:16px 22px;border-bottom:3px solid var(--blue);
-    background:#fff;
-  }
-  .logo{
-    width:46px;height:46px;border-radius:10px;background:var(--blue);
-    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:20px;
-    box-shadow:4px 4px 0 var(--yellow);
-    flex-shrink:0;
-  }
-  .ut-logo{
-    height:46px;border-radius:10px;object-fit:contain;flex-shrink:0;
-    box-shadow:4px 4px 0 var(--yellow);background:#000;
-  }
-  .titles h1{font-size:22px;letter-spacing:.5px;}
-  .titles .sub{font-size:13px;color:var(--muted);font-weight:500;margin-top:2px;}
-  .head-right{margin-left:auto;text-align:right;font-size:12px;color:var(--muted);}
-  .head-right b{color:var(--blue);}
+  /* ============ LAYOUT ============ */
+  .app{display:grid;grid-template-columns:236px minmax(0,1fr);min-height:100vh;}
+  .main{min-width:0;display:flex;flex-direction:column;}
 
-  /* Metric bar */
-  .metrics{
-    display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:18px 0;
+  /* ============ SIDEBAR ============ */
+  .sidebar{
+    background:var(--purple);color:#fff;padding:20px 16px;display:flex;flex-direction:column;gap:16px;
+    position:sticky;top:0;height:100vh;overflow-y:auto;
   }
+  .sb-head{
+    font-size:11px;letter-spacing:1.6px;text-transform:uppercase;font-weight:800;
+    display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.18);
+    opacity:.95;
+  }
+  .sb-head .dot{width:8px;height:8px;border-radius:50%;background:var(--yellow);display:inline-block;}
+  .sb-item .sb-label{
+    font-size:10px;text-transform:uppercase;letter-spacing:.8px;opacity:.7;font-weight:700;margin-bottom:6px;
+  }
+  .sb-select,.sb-input{
+    width:100%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.26);color:#fff;
+    border-radius:8px;padding:8px 9px;font-size:12.5px;font-weight:600;outline:none;
+  }
+  .sb-select:focus,.sb-input:focus{border-color:var(--yellow);background:rgba(255,255,255,.18);}
+  .sb-select option{color:#1e272e;background:#fff;}
+  .sb-input::-webkit-outer-spin-button,.sb-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .sb-input{-moz-appearance:textfield;appearance:textfield;}
+  .range-row{display:flex;align-items:center;gap:5px;}
+  .range-row .sb-input{flex:1;min-width:0;}
+  .range-row .sep{opacity:.6;font-size:12px;}
+  .range-row .unit{font-size:11px;opacity:.7;}
+  .mode-btns{display:flex;background:rgba(255,255,255,.12);border-radius:8px;padding:3px;gap:3px;}
+  .mode-btn{
+    flex:1;border:0;background:transparent;color:#fff;font-size:11.5px;font-weight:700;
+    padding:7px 4px;border-radius:6px;cursor:pointer;transition:all .15s;
+  }
+  .mode-btn.active{background:#fff;color:var(--purple);}
+  .sb-upload{
+    display:block;text-align:center;border:1.5px dashed rgba(255,255,255,.45);border-radius:8px;
+    padding:10px 8px;font-size:11.5px;font-weight:700;cursor:pointer;transition:all .15s;
+  }
+  .sb-upload:hover{background:rgba(255,255,255,.12);border-color:var(--yellow);}
+  .sb-mini{
+    margin-top:auto;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);
+    border-radius:10px;padding:12px;
+  }
+  .sb-mini-title{
+    font-size:9.5px;text-transform:uppercase;letter-spacing:.8px;opacity:.75;font-weight:700;
+    text-align:center;margin-bottom:10px;
+  }
+  .mini-bars{display:flex;gap:18px;justify-content:center;align-items:flex-end;}
+  .mini-col{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10px;opacity:.9;}
+  .mini-track{
+    width:26px;height:62px;background:rgba(255,255,255,.14);border-radius:5px;
+    display:flex;align-items:flex-end;overflow:hidden;
+  }
+  .mini-bar{width:100%;border-radius:4px 4px 0 0;transition:height .25s ease;}
+  .mini-bar.data{background:#cbb8ff;}
+  .mini-bar.model{background:#7cc4ff;}
+  .mini-vals{display:flex;justify-content:center;gap:24px;font-size:11px;font-weight:700;margin-top:6px;}
+
+  /* ============ TOPBAR ============ */
+  .topbar{
+    display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px;
+    padding:13px 24px;background:#fff;border-bottom:1px solid var(--line);
+  }
+  .brand{height:40px;width:auto;border-radius:8px;object-fit:contain;background:#000;padding:2px;}
+  .titlewrap{text-align:center;}
+  .titlewrap h1{
+    font-size:15px;letter-spacing:1.4px;font-weight:800;color:var(--ink-head);
+    display:flex;align-items:center;justify-content:center;gap:8px;text-transform:uppercase;
+  }
+  .titlewrap h1 svg{color:var(--purple);}
+  .titlewrap p{font-size:11.5px;color:var(--muted);margin-top:3px;}
+  .topbar-right{width:40px;}
+
+  /* ============ CONTENT ============ */
+  .content{padding:18px 22px 32px;display:flex;flex-direction:column;gap:16px;}
+
+  .metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;}
   .metric{
-    background:var(--blue);border:1px solid var(--blue-dark);border-left:5px solid var(--yellow);
-    border-radius:10px;padding:12px 14px;position:relative;
+    display:flex;align-items:center;gap:11px;background:var(--card);border:1px solid var(--line);
+    border-radius:12px;padding:13px 14px;min-width:0;
   }
-  .metric .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.85);font-weight:600;}
-  .metric .val{font-size:24px;font-weight:800;color:#fff;margin-top:2px;}
-  .metric .val.neg{color:#ffb3ad;}
-  .metric .val.ok{color:#dff5e3;}
+  .metric .ic{
+    width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    color:#fff;flex-shrink:0;
+  }
+  .metric .ic svg{width:18px;height:18px;}
+  .metric .lbl{
+    font-size:9.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .metric .val{font-size:18px;font-weight:800;color:var(--ink-head);line-height:1.25;word-break:break-word;}
+  .metric .val.small{font-size:13px;font-weight:700;}
 
-  /* Layout grid */
-  .grid{
-    display:grid;
-    grid-template-columns:300px 1fr 348px;
-    grid-template-areas:"left center right" "left interp right";
-    gap:16px;
-  }
-  .left{grid-area:left;display:flex;flex-direction:column;gap:16px;}
-  .center{grid-area:center;display:flex;flex-direction:column;gap:16px;}
-  .right{grid-area:right;display:flex;flex-direction:column;gap:16px;}
-  .interp{grid-area:interp;}
+  .mid{display:grid;grid-template-columns:minmax(0,1fr) 236px;gap:16px;align-items:start;}
+  .cards{display:flex;flex-direction:column;gap:16px;min-width:0;}
+  .two-col{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;}
 
-  .panel{
-    background:var(--panel);border:1.5px solid var(--line);border-radius:12px;
-    padding:14px 16px;position:relative;
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 17px;min-width:0;}
+  .card h2{
+    font-size:12.5px;font-weight:800;color:var(--ink-head);margin-bottom:12px;letter-spacing:.2px;
   }
-  .panel::before{
-    content:"";position:absolute;top:8px;left:8px;width:10px;height:10px;
-    background:var(--yellow);border-radius:2px;z-index:0;
-  }
-  .panel h3{
-    font-size:13px;text-transform:uppercase;letter-spacing:.8px;
-    padding-bottom:8px;border-bottom:2px solid var(--blue-soft);margin-bottom:10px;
-    position:relative;z-index:1;
-  }
+  .card h2 .sub{font-weight:500;color:var(--muted);font-size:11px;margin-left:6px;}
 
-  /* Context table */
-  table.ctx{width:100%;border-collapse:collapse;font-size:13px;}
-  table.ctx td{padding:6px 4px;border-bottom:1px solid var(--line);}
-  table.ctx td:first-child{color:var(--muted);width:45%;}
-  table.ctx td:last-child{font-weight:600;color:var(--ink);}
-  .ctx-input{width:100%;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-size:13px;color:var(--ink);}
-  .ctx-input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 2px var(--blue-soft);}
+  /* charts */
+  #mainChart svg,#resChart svg{display:block;width:100%;height:auto;overflow:visible;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:8px;}
+  .legend .item{display:flex;align-items:center;gap:6px;}
+  .legend .dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--blue);background:#fff;}
+  .legend .sw{width:18px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--yellow),var(--blue));}
+  .legend .band{width:16px;height:10px;border:1px dashed rgba(75,44,191,.5);background:rgba(75,44,191,.06);border-radius:2px;}
 
-  /* Data table */
-  .data-wrap{max-height:340px;overflow:auto;border:1px solid var(--line);border-radius:8px;}
-  table.data{width:100%;border-collapse:collapse;font-size:12px;}
+  /* model card */
+  .eqbox{
+    background:var(--purple-soft);border:1px solid var(--purple-line);border-radius:10px;
+    padding:13px 10px;text-align:center;color:var(--purple-dark);
+    font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.6;
+    margin-bottom:14px;overflow-wrap:anywhere;
+  }
+  .eqbox sup{font-size:.65em;}
+  .eqbox .mono{font-family:inherit;}
+  .slider-row{margin-bottom:11px;}
+  .slider-row:last-child{margin-bottom:0;}
+  .slider-top{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;color:var(--muted);margin-bottom:3px;}
+  .slider-top b{color:var(--ink-head);font-size:11.5px;font-variant-numeric:tabular-nums;}
+  .slider-row input[type=range]{width:100%;accent-color:var(--purple);height:4px;cursor:pointer;}
+
+  /* right side */
+  .rside{display:flex;flex-direction:column;gap:14px;min-width:0;}
+  .mini-card{padding:13px 15px;}
+  .mini-card h3{
+    font-size:9.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);
+    font-weight:800;margin-bottom:6px;
+  }
+  .mini-card .big{font-size:17px;font-weight:800;color:var(--ink-head);line-height:1.2;}
+  .bar{height:6px;background:#eef1f4;border-radius:4px;margin-top:9px;overflow:hidden;}
+  .bar > span{display:block;height:100%;background:var(--green);border-radius:4px;transition:width .25s ease;}
+  .export-btns{display:flex;gap:8px;}
+  .exp-btn{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 4px;
+    border:1px solid var(--line);border-radius:9px;background:#fff;font-size:10px;font-weight:600;
+    color:var(--muted);cursor:pointer;transition:all .15s;
+  }
+  .exp-btn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-soft);}
+  .exp-btn svg{width:16px;height:16px;}
+
+  /* table */
+  .table-tools{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+  .table-tools .hint{font-size:11px;color:var(--muted);}
+  .table-tools .spacer{flex:1;}
+  .btn{
+    border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:11.5px;
+    padding:7px 12px;border-radius:8px;cursor:pointer;transition:all .15s;
+  }
+  .btn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-soft);}
+  .table-wrap{overflow:auto;max-height:330px;border:1px solid var(--line);border-radius:10px;}
+  table.data{width:100%;border-collapse:collapse;font-size:12.5px;}
   table.data th{
-    position:sticky;top:0;background:var(--blue);color:#fff;font-weight:600;
-    padding:7px 6px;text-align:center;z-index:2;font-size:11px;letter-spacing:.3px;
+    position:sticky;top:0;z-index:2;background:#f6f3fd;color:var(--purple-dark);
+    font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:800;
+    padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap;
   }
-  table.data td{padding:0;border-bottom:1px solid var(--line);text-align:center;}
-  table.data tr:nth-child(even) td{background:var(--blue-soft-2);}
-  table.data td input{
-    width:100%;border:none;background:transparent;padding:6px 5px;font-size:12px;text-align:center;color:var(--ink);
+  table.data td{padding:5px 10px;border-bottom:1px solid #f1f4f6;color:var(--ink);}
+  table.data tr:last-child td{border-bottom:0;}
+  table.data tr:hover td{background:#fbfaff;}
+  table.data td.idx{color:var(--muted);font-size:11.5px;}
+  table.data td.num{font-variant-numeric:tabular-nums;}
+  table.data td.res.ok{color:var(--green);font-weight:700;}
+  table.data td.res.bad{color:#e74c3c;font-weight:700;}
+  td input.cell{
+    width:88px;border:1px solid transparent;background:transparent;padding:4px 6px;
+    font-size:12.5px;color:var(--ink);border-radius:6px;font-variant-numeric:tabular-nums;
   }
-  table.data td input:focus{outline:none;background:#fff;box-shadow:inset 0 0 0 2px var(--blue);}
-  table.data td.in-range{background:rgba(255,200,45,.18);}
-  table.data td.del-cell{padding:4px;}
+  td input.cell:focus{outline:none;border-color:var(--purple);background:#fff;box-shadow:0 0 0 2px var(--purple-soft);}
   .del-btn{
-    border:none;background:transparent;color:var(--red);cursor:pointer;font-size:15px;line-height:1;
-    width:22px;height:22px;border-radius:5px;
+    border:0;background:transparent;color:#c0392b;cursor:pointer;font-size:15px;line-height:1;
+    width:24px;height:24px;border-radius:6px;
   }
   .del-btn:hover{background:#fdecea;}
-  .data-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
-  .btn{
-    border:1.5px solid var(--blue);background:#fff;color:var(--blue);font-weight:600;
-    padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px;transition:all .15s;
+
+  /* interpretation */
+  #interp p{margin:0 0 8px;font-size:13px;color:var(--ink);}
+  #interp p:last-child{margin-bottom:0;}
+  .hi{color:var(--purple-dark);font-weight:700;}
+  .eqline{
+    font-family:Georgia,"Times New Roman",serif;font-size:15px;color:var(--purple-dark);
+    background:var(--purple-soft);border-radius:8px;padding:9px 12px;margin:10px 0 !important;
+    display:inline-block;
   }
-  .btn:hover{background:var(--blue-soft);}
-  .btn.primary{background:var(--blue);color:#fff;border-color:var(--blue);}
-  .btn.primary:hover{background:var(--blue-dark);}
-  .btn.yellow{background:var(--yellow);color:var(--ink);border-color:var(--yellow);font-weight:700;}
-  .btn.yellow:hover{background:#e6b827;}
-  .btn.sm{padding:5px 9px;font-size:11px;}
-  .file-label{cursor:pointer;}
+  .note{font-size:11.5px;color:var(--muted);}
 
-  /* Chart */
-  .chart-box{width:100%;}
-  .chart-legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;margin-top:6px;color:var(--muted);}
-  .leg{display:flex;align-items:center;gap:6px;}
-  .leg .sw{width:16px;height:3px;border-radius:2px;}
-  .leg .dot{width:9px;height:9px;border-radius:50%;border:2px solid var(--blue);background:#fff;}
-
-  /* Model panel */
-  .formula{
-    text-align:center;font-size:21px;font-weight:400;color:#2C3E50;
-    background:#F5E6A3;border:1.5px solid var(--yellow);
-    border-radius:10px;padding:14px 10px;margin-bottom:14px;
-    box-shadow:3px 3px 0 var(--blue-soft);
-    font-family:'Latin Modern Math','STIX Two Math','Cambria Math','Times New Roman',serif;
-    letter-spacing:.3px;
-  }
-  .formula sup{font-size:0.58em;}
-  .formula i{font-style:italic;font-weight:400;}
-  .param{margin-bottom:12px;}
-  .param .row{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:4px;}
-  .param .row b{color:var(--blue);font-size:15px;}
-  .param input[type=number]{
-    width:78px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;font-size:13px;color:var(--ink);
-  }
-  .param input[type=number]:focus{outline:none;border-color:var(--blue);}
-  .param input[type=range]{width:100%;accent-color:var(--blue);margin-top:6px;}
-  .fit-btns{display:flex;gap:8px;margin-top:14px;}
-  .fit-btns .btn{flex:1;text-align:center;}
-  .fit-btns .btn.active{background:var(--yellow);color:var(--ink);border-color:var(--yellow);}
-
-  .range-block{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;}
-  .range-block .rr{display:flex;gap:10px;align-items:center;margin-bottom:8px;font-size:12px;}
-  .range-block .rr label{color:var(--muted);width:42px;}
-  .range-block input[type=number]{width:74px;padding:3px 5px;border:1px solid var(--line);border-radius:6px;font-size:12px;}
-  .range-hint{font-size:11px;color:var(--muted);margin-top:2px;}
-
-  /* Interpretation */
-  .interp p{font-size:14px;color:var(--ink);margin:0 0 8px;}
-  .interp b{color:var(--blue);}
-  .mi{font-family:'Latin Modern Math','STIX Two Math','Cambria Math','Times New Roman',serif;font-weight:400;color:#2c3e50;font-size:1.05em;white-space:nowrap;}
-  .mi i{font-style:italic;font-weight:400;}
-  .mi sub,.mi sup{font-size:0.7em;}
-  .mi .unit{font-size:0.82em;font-style:normal;}
-  .interp .tag{
-    display:inline-block;background:var(--blue);color:#fff;font-size:11px;font-weight:600;
-    padding:2px 8px;border-radius:20px;margin-right:6px;
+  /* print */
+  @media print{
+    .sidebar,.topbar,.rside,.table-tools,.sb-upload{display:none !important;}
+    .app{grid-template-columns:1fr;}
+    .content{padding:0;}
+    .card{break-inside:avoid;border-color:#ccc;}
+    body{background:#fff;}
   }
 
-  /* Responsive */
-  @media(max-width:1100px){
-    .grid{grid-template-columns:1fr;grid-template-areas:"left" "center" "right" "interp";}
-    .metrics{grid-template-columns:repeat(2,1fr);}
+  @media (max-width:1080px){
+    .app{grid-template-columns:1fr;}
+    .sidebar{position:static;height:auto;overflow:visible;}
+    .mid{grid-template-columns:1fr;}
+    .two-col{grid-template-columns:1fr;}
+    .metrics{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .sb-mini{margin-top:8px;}
   }
-  @media(max-width:560px){
+  @media (max-width:560px){
     .metrics{grid-template-columns:1fr;}
-    .titles h1{font-size:18px;}
-    .head-right{display:none;}
+    .content{padding:14px;}
+    .titlewrap h1{font-size:12px;letter-spacing:.8px;}
+    .brand{height:32px;}
   }
-  svg{display:block;width:100%;height:auto;overflow:visible;}
-  .axis{font-size:11px;fill:var(--muted);}
-  .gridline{stroke:#eef3f9;stroke-width:1;}
-  .axisline{stroke:var(--line);stroke-width:1;}
 </style>
 </head>
 <body>
 
-<header>
-  <img class="ut-logo" src="https://media.base44.com/images/public/6ab290c11265ad626905aac0/b38dd8bff_Logo_UT-transparan.png" alt="Logo Universitas Terbuka">
-  <div class="titles">
-    <h1>CHEMISTRY DATA ANALYTICS</h1>
-    <div class="sub">Dari Fenomena Menuju Data — Dari Data Menuju Wawasan Matematis</div>
-  </div>
-  <div class="head-right">
-    <div><b>Universitas Terbuka</b></div>
-    <div>Pembelajaran STEM Kimia · Sesi 1</div>
-  </div>
-</header>
+<div class="app">
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar">
+    <div class="sb-head"><span class="dot"></span>Dashboard</div>
 
-<div class="wrap">
+    <div class="sb-item">
+      <div class="sb-label">Variabel X</div>
+      <select id="varX" class="sb-select"></select>
+    </div>
 
-  <!-- Metrics -->
-  <div class="metrics">
-    <div class="metric"><div class="lbl">Observasi</div><div class="val" id="m-obs">0</div></div>
-    <div class="metric"><div class="lbl">Tinggi Maks (cm)</div><div class="val" id="m-max">0</div></div>
-    <div class="metric"><div class="lbl">R²</div><div class="val" id="m-r2">0</div></div>
-    <div class="metric"><div class="lbl">RMSE (cm)</div><div class="val" id="m-rmse">0</div></div>
-    <div class="metric"><div class="lbl">Dalam Toleransi ±1cm</div><div class="val" id="m-tol">0%</div></div>
-  </div>
+    <div class="sb-item">
+      <div class="sb-label">Variabel Y</div>
+      <select id="varY" class="sb-select"></select>
+    </div>
 
-  <div class="grid">
-    <!-- LEFT -->
-    <div class="left">
-      <div class="panel">
-        <h3>Konteks Percobaan</h3>
-        <table class="ctx">
-          <tr><td>Nomor Percobaan</td><td><input class="ctx-input" id="ctx-trial" value="1"></td></tr>
-          <tr><td>Jenis Tablet</td><td><input class="ctx-input" id="ctx-tablet" value="Effervescent C"></td></tr>
-          <tr><td>Volume Air (mL)</td><td><input class="ctx-input" id="ctx-vol" value="200"></td></tr>
-          <tr><td>Suhu (°C)</td><td><input class="ctx-input" id="ctx-temp" value="25"></td></tr>
-        </table>
+    <div class="sb-item">
+      <div class="sb-label">Rentang Data</div>
+      <div class="range-row">
+        <input type="number" id="tmin" class="sb-input" step="any">
+        <span class="sep">–</span>
+        <input type="number" id="tmax" class="sb-input" step="any">
+        <span class="unit" id="rangeUnit">s</span>
+      </div>
+    </div>
+
+    <div class="sb-item">
+      <div class="sb-label">Fungsi Matematika</div>
+      <select id="modelSel" class="sb-select"></select>
+    </div>
+
+    <div class="sb-item">
+      <div class="sb-label">Mode Parameter</div>
+      <div class="mode-btns">
+        <button class="mode-btn active" id="btnBest">Best Fit</button>
+        <button class="mode-btn" id="btnManual">Manual</button>
+      </div>
+    </div>
+
+    <label class="sb-upload">Unggah CSV<input type="file" id="csvFile" accept=".csv,.txt" style="display:none"></label>
+
+    <div class="sb-mini">
+      <div class="sb-mini-title">Data vs Model</div>
+      <div class="mini-bars">
+        <div class="mini-col">
+          <div class="mini-track"><div class="mini-bar data" id="miniBarData" style="height:4%"></div></div>
+          <span>Data</span>
+        </div>
+        <div class="mini-col">
+          <div class="mini-track"><div class="mini-bar model" id="miniBarModel" style="height:4%"></div></div>
+          <span>Model</span>
+        </div>
+      </div>
+      <div class="mini-vals"><span id="miniData">0.00</span><span id="miniModel">0.00</span></div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <main class="main">
+    <header class="topbar">
+      <img class="brand" src="https://media.base44.com/images/public/6ab290c11265ad626905aac0/b38dd8bff_Logo_UT-transparan.png" alt="Universitas Terbuka">
+      <div class="titlewrap">
+        <h1>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <path d="M4 20V9M10 20V4M16 20v-7M22 20V7"/>
+          </svg>
+          Mathematical Modeling Dashboard
+        </h1>
+        <p>Dari Data Menuju Model, Validasi, dan Interpretasi</p>
+      </div>
+      <div class="topbar-right"></div>
+    </header>
+
+    <div class="content">
+      <!-- METRICS -->
+      <div class="metrics">
+        <div class="metric">
+          <div class="ic" style="background:var(--violet)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12h4l3 8 4-16 3 8h4"/>
+            </svg>
+          </div>
+          <div><div class="lbl">Observasi</div><div class="val" id="m-obs">0</div></div>
+        </div>
+
+        <div class="metric">
+          <div class="ic" style="background:var(--blue)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2"/>
+            </svg>
+          </div>
+          <div><div class="lbl">R²</div><div class="val" id="m-r2">–</div></div>
+        </div>
+
+        <div class="metric">
+          <div class="ic" style="background:var(--green)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <path d="M5 20V12M12 20V5M19 20v-5"/>
+            </svg>
+          </div>
+          <div><div class="lbl">RMSE (cm)</div><div class="val" id="m-rmse">–</div></div>
+        </div>
+
+        <div class="metric">
+          <div class="ic" style="background:var(--orange)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/>
+            </svg>
+          </div>
+          <div><div class="lbl">Model Terbaik</div><div class="val small" id="m-model">Eksponensial</div></div>
+        </div>
+
+        <div class="metric">
+          <div class="ic" style="background:var(--purple)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <path d="M4 7h16M4 12h16M4 17h16"/>
+              <circle cx="9" cy="7" r="2" fill="currentColor" stroke="none"/>
+              <circle cx="15" cy="12" r="2" fill="currentColor" stroke="none"/>
+              <circle cx="7" cy="17" r="2" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+          <div><div class="lbl">Toleransi ε</div><div class="val" id="m-eps">±1.0</div></div>
+        </div>
       </div>
 
-      <div class="panel">
-        <h3>Data Mentah</h3>
-        <div class="data-wrap">
-          <table class="data" id="dataTable">
+      <!-- MID -->
+      <div class="mid">
+        <div class="cards">
+          <section class="card">
+            <h2>Grafik Data dan Model Matematis</h2>
+            <div id="mainChart"></div>
+            <div class="legend">
+              <div class="item"><span class="dot"></span> Data pengamatan</div>
+              <div class="item"><span class="sw"></span> Kurva model</div>
+              <div class="item"><span class="band"></span> Rentang fitting</div>
+            </div>
+          </section>
+
+          <div class="two-col">
+            <section class="card">
+              <h2>Ringkasan Model</h2>
+              <div class="eqbox" id="eqBox"></div>
+              <div id="paramSliders"></div>
+            </section>
+
+            <section class="card">
+              <h2>Residual dan Batas Toleransi</h2>
+              <div id="resChart"></div>
+              <div class="legend">
+                <div class="item"><span class="dot" style="border-color:var(--purple);background:#efeafc"></span> Residu (y − ŷ)</div>
+                <div class="item"><span class="sw" style="background:var(--green);height:2px"></span> ±ε</div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <aside class="rside">
+          <div class="card mini-card">
+            <h3>Tanggal Analisis</h3>
+            <div class="big" id="analysisDate">–</div>
+          </div>
+
+          <div class="card mini-card">
+            <h3>Residual Within ε</h3>
+            <div class="big" id="withinEps">–</div>
+            <div class="bar"><span id="withinBar" style="width:0%"></span></div>
+          </div>
+
+          <div class="card mini-card">
+            <h3>Kelayakan Model</h3>
+            <div class="big" id="feasibility">–</div>
+          </div>
+
+          <div class="card mini-card">
+            <h3>Ekspor</h3>
+            <div class="export-btns">
+              <button class="exp-btn" id="expExcel" title="Unduh CSV (Excel)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+                  <path d="M14 3v6h6"/><path d="M8 13l4 5M12 13l-4 5"/>
+                </svg>
+                Excel
+              </button>
+              <button class="exp-btn" id="expPdf" title="Cetak / Simpan PDF">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3v12"/><path d="M8 11l4 4 4-4"/>
+                  <path d="M4 19h16"/>
+                </svg>
+                PDF
+              </button>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- TABLE -->
+      <section class="card">
+        <h2>Data <span class="sub">X, Y, prediksi, dan residual</span></h2>
+        <div class="table-tools">
+          <span class="hint">Klik nilai X atau Y untuk mengubah data</span>
+          <div class="spacer"></div>
+          <button class="btn" id="addRow">+ Baris</button>
+          <button class="btn" id="clearRows">Kosongkan</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data">
             <thead>
               <tr>
-                <th style="width:30px">#</th>
-                <th>Waktu (s)</th>
-                <th>Volume (mL)</th>
-                <th>Suhu (°C)</th>
-                <th>Tinggi (cm)</th>
-                <th style="width:28px"></th>
+                <th style="width:46px">No</th>
+                <th id="thX">X</th>
+                <th id="thY">Y</th>
+                <th>Prediksi</th>
+                <th>Residual</th>
+                <th style="width:38px"></th>
               </tr>
             </thead>
-            <tbody id="dataBody"></tbody>
+            <tbody id="tableBody"></tbody>
           </table>
         </div>
-        <div class="data-tools">
-          <button class="btn sm" id="addRow">+ Tambah Baris</button>
-          <label class="btn sm file-label">Unggah CSV<input type="file" id="csvFile" accept=".csv" style="display:none"></label>
-          <button class="btn sm" id="exportCsv">Ekspor CSV</button>
-          <button class="btn sm" id="clearData">Kosongkan</button>
-        </div>
-        <div class="range-hint" style="margin-top:8px">Tip: salin kolom dari spreadsheet lalu tempel ke tabel. Titik dalam rentang fitting disorot kuning.</div>
-      </div>
+      </section>
+
+      <!-- INTERPRETATION -->
+      <section class="card">
+        <h2>Interpretasi</h2>
+        <div id="interp"></div>
+      </section>
     </div>
-
-    <!-- CENTER -->
-    <div class="center">
-      <div class="panel">
-        <h3>Data Eksperimen vs Model Matematis</h3>
-        <div class="chart-box" id="mainChart"></div>
-        <div class="chart-legend">
-          <div class="leg"><span class="dot"></span> Tinggi Buih (cm)</div>
-          <div class="leg"><span class="sw" style="background:var(--yellow)"></span> Model Dinamis <span class="mi"><i>h</i>(<i>t</i>)=<i>H</i>(1−<span class="up">e</span><sup>−<i>k</i><i>t</i></sup>)</span></div>
-          <div class="leg"><span class="sw" style="background:var(--blue-soft);height:10px;width:14px;border:1px dashed var(--blue)"></span> Rentang Fitting</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- RIGHT -->
-    <div class="right">
-      <div class="panel">
-        <h3>Model Matematis</h3>
-        <div class="formula" id="formulaBox"><span class="mi"><i>h</i>(<i>t</i>)&nbsp;=&nbsp;<i>H</i>(1&nbsp;−&nbsp;<span class="up">e</span><sup>−<i>k</i><i>t</i></sup>)</span></div>
-
-        <div class="param">
-          <div class="row"><span>Tinggi Asimtot</span><span class="mi"><i>H</i>&nbsp;=&nbsp;<span id="Hval">18.00</span></span></div>
-          <input type="range" id="Hslider" min="1" max="40" step="0.1" value="18">
-          <input type="number" id="Hnum" min="0" max="200" step="0.1" value="18" style="margin-top:4px">
-        </div>
-
-        <div class="param">
-          <div class="row"><span>Parameter Kenaikan Buih</span><span class="mi"><i>k</i>&nbsp;=&nbsp;<span id="kval">0.040</span></span></div>
-          <input type="range" id="kslider" min="0.001" max="0.3" step="0.001" value="0.04">
-          <input type="number" id="knum" min="0" max="2" step="0.001" value="0.04" style="margin-top:4px">
-        </div>
-
-        <div class="fit-btns">
-          <button class="btn primary" id="bestFit">Best Fit</button>
-          <button class="btn yellow active" id="manualFit">Manual Fit</button>
-        </div>
-
-        <div class="range-block">
-          <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:6px">Rentang Waktu Fitting</div>
-          <div class="rr"><label>Dari</label><input type="number" id="tmin" value="0" step="1"> <label>s</label></div>
-          <div class="rr"><label>Sampai</label><input type="number" id="tmax" value="100" step="1"> <label>s</label></div>
-          <div class="range-hint">Hanya titik dalam rentang dipakai untuk fitting & metrik. Titik di luarnya tetap tampil.</div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <h3>Residu (Fitting)</h3>
-        <div class="chart-box" id="resChart"></div>
-        <div class="chart-legend">
-          <div class="leg"><span class="dot" style="border-color:var(--blue);background:var(--blue-soft)"></span> Residu = data − model</div>
-          <div class="leg"><span class="sw" style="background:var(--green);height:2px"></span> ±1 cm</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- INTERPRETATION -->
-    <div class="panel interp" id="interpPanel">
-      <h3>Interpretasi Ilmiah Dinamis</h3>
-      <div id="interpText"></div>
-    </div>
-  </div>
+  </main>
 </div>
 
 <script>
-(function(){
+(function () {
   "use strict";
 
-  // ---- Sample data (effervescent tablet foam height) ----
-  var sample = [
-    [0,200,25,0.0],[5,200,25,3.3],[10,200,25,5.9],[15,200,25,8.1],
-    [20,200,25,9.9],[25,200,25,11.6],[30,200,25,12.9],[40,200,25,14.8],
-    [50,200,25,16.2],[60,200,25,17.0],[70,200,25,17.6],[80,200,25,17.9],
-    [90,200,25,18.1],[100,200,25,18.0]
+  var SVGNS = "http://www.w3.org/2000/svg";
+  var EPS = 1.0;
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+  function f3(v) { return isFinite(v) ? Number(v).toFixed(3) : "–"; }
+  function f4(v) { return isFinite(v) ? Number(v).toFixed(4) : "–"; }
+  function num(v) {
+    if (v === null || v === undefined || v === "") return null;
+    var n = typeof v === "number" ? v : parseFloat(String(v).replace(",", "."));
+    return isFinite(n) ? n : null;
+  }
+
+  /* ============================================================
+     DATA
+     ============================================================ */
+  var DEFAULT_COLUMNS = [
+    { key: "time_s", label: "time_s", unit: "s" },
+    { key: "volume_ml", label: "volume_ml", unit: "mL" },
+    { key: "temp_c", label: "temp_c", unit: "°C" },
+    { key: "foam_height_cm", label: "foam_height_cm", unit: "cm" }
   ];
-  // each row: [time, volume, temp, height]
+  var DEFAULT_DATA = [
+    [0, 0.0], [5, 3.3], [10, 5.9], [15, 8.1], [20, 9.9], [25, 11.6],
+    [30, 12.9], [35, 13.9], [40, 14.8], [45, 15.5], [50, 16.2],
+    [55, 16.6], [60, 17.0], [65, 17.3], [70, 17.6], [80, 17.9], [90, 18.1]
+  ];
 
-  var data = sample.map(function(r){return r.slice();});
-  var H = 18, k = 0.04;
-  var mode = "manual"; // or "best"
+  var columns = DEFAULT_COLUMNS.map(function (c) { return { key: c.key, label: c.label, unit: c.unit }; });
+  var rows = DEFAULT_DATA.map(function (d) {
+    return { time_s: d[0], volume_ml: 200, temp_c: 25, foam_height_cm: d[1] };
+  });
 
-  var $ = function(id){return document.getElementById(id);};
+  var xKey = "time_s";
+  var yKey = "foam_height_cm";
+  var modelId = "asym";
+  var mode = "best";
+  var params = [];
 
-  // ---- Table rendering ----
-  function renderTable(){
-    var body = $("dataBody");
-    body.innerHTML = "";
-    data.forEach(function(row,i){
-      var tr = document.createElement("tr");
-      tr.innerHTML =
-        '<td>'+(i+1)+'</td>'+
-        cellHTML(i,0)+
-        cellHTML(i,1)+
-        cellHTML(i,2)+
-        cellHTML(i,3)+
-        '<td class="del-cell"><button class="del-btn" data-i="'+i+'" title="Hapus">×</button></td>';
-      body.appendChild(tr);
-    });
-    // mark in-range cells
-    updateRangeHighlight();
+  function colByKey(k) {
+    for (var i = 0; i < columns.length; i++) if (columns[i].key === k) return columns[i];
+    return null;
   }
-  function cellHTML(i,col){
-    return '<td data-col="'+col+'"><input type="number" step="any" value="'+(data[i][col]!==null&&data[i][col]!==undefined?data[i][col]:"")+'" data-i="'+i+'" data-col="'+col+'"></td>';
+  function colLabel(k) { var c = colByKey(k); return c ? c.label : k; }
+  function axisLabel(k) {
+    var c = colByKey(k);
+    if (!c) return k;
+    return c.unit ? c.label + " (" + c.unit + ")" : c.label;
   }
 
-  function updateRangeHighlight(){
-    var tmin = parseFloat($("tmin").value)||0;
-    var tmax = parseFloat($("tmax").value)||Infinity;
-    var rows = $("dataBody").children;
-    for(var i=0;i<rows.length;i++){
-      var t = data[i][0];
-      var inRange = (!isNaN(t) && t>=tmin && t<=tmax);
-      var cells = rows[i].querySelectorAll("td[data-col]");
-      cells.forEach(function(c){c.classList.toggle("in-range",inRange);});
+  function dataPoints() {
+    var out = [];
+    for (var i = 0; i < rows.length; i++) {
+      var x = num(rows[i][xKey]), y = num(rows[i][yKey]);
+      if (x === null || y === null) continue;
+      out.push({ i: i, x: x, y: y });
     }
+    return out;
   }
-
-  // ---- Events on table ----
-  $("dataBody").addEventListener("input",function(e){
-    var t = e.target;
-    if(t.tagName==="INPUT"){
-      var i = +t.dataset.i, col = +t.dataset.col;
-      var v = t.value===""?null:parseFloat(t.value);
-      data[i][col] = (v===null||isNaN(v))?null:v;
-      if(col===0) updateRangeHighlight();
-      refresh();
-    }
-  });
-  $("dataBody").addEventListener("click",function(e){
-    if(e.target.classList.contains("del-btn")){
-      var i = +e.target.dataset.i;
-      data.splice(i,1);
-      renderTable();
-      refresh();
-    }
-  });
-  // Paste from spreadsheet
-  $("dataBody").addEventListener("paste",function(e){
-    e.preventDefault();
-    var clip = (e.clipboardData||window.clipboardData).getData("text");
-    var lines = clip.split(/\r?\n/).filter(function(l){return l.trim()!="";});
-    // find target row/col
-    var sel = document.activeElement;
-    var startRow = sel?+sel.dataset.i:0;
-    var startCol = sel?+sel.dataset.col:0;
-    if(isNaN(startRow)) startRow=0;
-    if(isNaN(startCol)) startCol=0;
-    lines.forEach(function(line,li){
-      var cells = line.split(/\t/);
-      var ri = startRow+li;
-      while(data.length<=ri){data.push([0,200,25,0]);}
-      cells.forEach(function(c,ci){
-        var col = startCol+ci;
-        if(col<4){
-          var v = parseFloat(c.replace(",",".")); // handle comma decimals
-          data[ri][col] = isNaN(v)?null:v;
-        }
-      });
-    });
-    renderTable();
-    refresh();
-  });
-
-  $("addRow").addEventListener("click",function(){
-    data.push([0,200,25,0]);
-    renderTable();
-    refresh();
-  });
-  $("clearData").addEventListener("click",function(){
-    if(confirm("Kosongkan semua data?")){
-      data=[];
-      renderTable();
-      refresh();
-    }
-  });
-
-  // ---- CSV import / export ----
-  $("csvFile").addEventListener("change",function(e){
-    var f = e.target.files[0];
-    if(!f) return;
-    var reader = new FileReader();
-    reader.onload = function(ev){
-      var text = ev.target.result;
-      parseCSV(text);
-    };
-    reader.readAsText(f);
-  });
-  function parseCSV(text){
-    var lines = text.split(/\r?\n/).filter(function(l){return l.trim()!="";});
-    var newData=[];
-    var startIdx = 0;
-    // skip header if first line contains non-numeric
-    var firstCells = lines[0].split(/[,\t]/);
-    var firstNumeric = firstCells.every(function(c){return !isNaN(parseFloat(c.replace(",",".")));});
-    if(!firstNumeric) startIdx = 1;
-    for(var i=startIdx;i<lines.length;i++){
-      var cells = lines[i].split(/[,\t]/).map(function(c){return c.trim();});
-      var nums = cells.map(function(c){return c===""?null:parseFloat(c.replace(",","."));});
-      // expect: time, volume, temp, height (or trial,time,...) — take last 4 numeric if more
-      var vals = nums.filter(function(n){return n!==null && !isNaN(n);});
-      if(vals.length>=4){
-        // assume order time, volume, temp, height
-        newData.push([vals[0],vals[1],vals[2],vals[3]]);
-      } else if(vals.length===2){
-        // time, height only
-        newData.push([vals[0],200,25,vals[1]]);
-      }
-    }
-    if(newData.length){
-      data = newData;
-      renderTable();
-      refresh();
-    }
+  function getRange() {
+    var a = parseFloat($("tmin").value), b = parseFloat($("tmax").value);
+    if (!isFinite(a)) a = -Infinity;
+    if (!isFinite(b)) b = Infinity;
+    return [a, b];
   }
-  $("exportCsv").addEventListener("click",function(){
-    var ctx = contextValues();
-    var header = "trial,time,volume_ml,temp_c,height_cm\n";
-    var rows = data.map(function(r,i){return [ctx.trial, r[0], r[1], r[2], r[3]].join(",");}).join("\n");
-    var blob = new Blob([header+rows+"\n"],{type:"text/csv"});
-    var a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "chemistry_data.csv";
-    a.click();
-  });
-
-  function contextValues(){
-    return {
-      trial: $("ctx-trial").value,
-      tablet: $("ctx-tablet").value,
-      vol: $("ctx-vol").value,
-      temp: $("ctx-temp").value
-    };
-  }
-
-  // ---- Parameters ----
-  function bindParam(sliderId,numId,key,fmt){
-    var slider = $(sliderId), num = $(numId);
-    function set(v,from){
-      v = parseFloat(v);
-      if(isNaN(v)) return;
-      if(key==="H"){H=v;}else{k=v;}
-      if(from!=="slider") slider.value=v;
-      if(from!=="num") num.value=v;
-      $("Hval").textContent=H.toFixed(2);
-      $("kval").textContent=k.toFixed(3);
-      setMode("manual");
-      refresh();
-    }
-    slider.addEventListener("input",function(){set(slider.value,"slider");});
-    num.addEventListener("input",function(){set(num.value,"num");});
-  }
-  bindParam("Hslider","Hnum","H");
-  bindParam("kslider","knum","k");
-
-  $("bestFit").addEventListener("click",function(){setMode("best"); computeBestFit(); refresh();});
-  $("manualFit").addEventListener("click",function(){setMode("manual"); refresh();});
-
-  function setMode(m){
-    mode=m;
-    $("bestFit").classList.toggle("active",m==="best");
-    $("bestFit").classList.toggle("primary",m==="best");
-    $("manualFit").classList.toggle("active",m==="manual");
-  }
-
-  ["tmin","tmax"].forEach(function(id){
-    $(id).addEventListener("input",function(){updateRangeHighlight();refresh();});
-  });
-
-  // ---- Fitting range ----
-  function getRange(){
-    var tmin = parseFloat($("tmin").value);
-    var tmax = parseFloat($("tmax").value);
-    if(isNaN(tmin)) tmin = -Infinity;
-    if(isNaN(tmax)) tmax = Infinity;
-    return {tmin:tmin,tmax:tmax};
-  }
-  function inRangePoints(){
+  function inRangePoints() {
     var r = getRange();
-    return data.filter(function(p){
-      var t=p[0],h=p[3];
-      return t!==null && h!==null && !isNaN(t) && !isNaN(h) && t>=r.tmin && t<=r.tmax;
-    });
+    return dataPoints().filter(function (p) { return p.x >= r[0] && p.x <= r[1]; });
   }
-
-  // ---- Best Fit: grid search over k, linear in H ----
-  function computeBestFit(){
-    var pts = inRangePoints();
-    if(pts.length<2){return;}
-    var bestSSE=Infinity,bestK=k,bestH=H;
-    var kmin=0.001,kmax=0.5,steps=2000;
-    for(var i=0;i<=steps;i++){
-      var kk = kmin+(kmax-kmin)*i/steps;
-      var Sx=0,Sxx=0;
-      for(var j=0;j<pts.length;j++){
-        var x = 1-Math.exp(-kk*pts[j][0]);
-        var y = pts[j][3];
-        Sx+=x*y; Sxx+=x*x;
-      }
-      if(Sxx===0) continue;
-      var Hh = Sx/Sxx;
-      if(Hh<=0) continue;
-      var sse=0;
-      for(j=0;j<pts.length;j++){
-        var pred=Hh*(1-Math.exp(-kk*pts[j][0]));
-        sse+=Math.pow(pts[j][3]-pred,2);
-      }
-      if(sse<bestSSE){bestSSE=sse;bestK=kk;bestH=Hh;}
+  function dataCtx() {
+    var pts = dataPoints();
+    if (!pts.length) {
+      return { minX: 0, maxX: 1, minY: 0, maxY: 1, rangeX: 1, rangeY: 1, meanY: 0 };
     }
-    H=bestH;k=bestK;
-    $("Hslider").value=Math.min(40,Math.max(1,H));
-    $("Hnum").value=H.toFixed(2);
-    $("kslider").value=Math.min(0.3,Math.max(0.001,k));
-    $("knum").value=k.toFixed(3);
-    $("Hval").textContent=H.toFixed(2);
-    $("kval").textContent=k.toFixed(3);
+    var xs = pts.map(function (p) { return p.x; });
+    var ys = pts.map(function (p) { return p.y; });
+    var minX = Math.min.apply(null, xs), maxX = Math.max.apply(null, xs);
+    var minY = Math.min.apply(null, ys), maxY = Math.max.apply(null, ys);
+    var rangeX = Math.max(maxX - minX, 1e-6);
+    var rangeY = Math.max(maxY - minY, 1e-6);
+    var meanY = ys.reduce(function (a, b) { return a + b; }, 0) / ys.length;
+    return { minX: minX, maxX: maxX, minY: minY, maxY: maxY, rangeX: rangeX, rangeY: rangeY, meanY: meanY };
   }
 
-  // ---- Metrics ----
-  function computeMetrics(){
+  /* ============================================================
+     MODELS
+     ============================================================ */
+  var MODELS = {
+    asym: {
+      name: "Eksponensial",
+      f: function (x, p) { return p[0] + p[1] * (1 - Math.exp(-p[2] * x)); },
+      params: [
+        {
+          sym: "c", label: "c — offset",
+          init: function (c) { return c.minY; },
+          lo: function (c) { return c.minY - c.rangeY; },
+          hi: function (c) { return c.minY + c.rangeY; },
+          step: function (c) { return Math.max(c.rangeY / 200, 1e-6); }
+        },
+        {
+          sym: "H", label: "H — amplitudo",
+          init: function (c) { return c.rangeY; },
+          lo: function (c) { return Math.max(c.rangeY * 0.05, 1e-4); },
+          hi: function (c) { return c.rangeY * 2; },
+          step: function (c) { return Math.max(c.rangeY / 200, 1e-6); }
+        },
+        {
+          sym: "k", label: "k — laju kenaikan",
+          init: function (c) { return 3 / Math.max(c.rangeX, 1); },
+          lo: function () { return 0.0001; },
+          hi: function () { return 5; },
+          step: function () { return 0.0001; }
+        }
+      ],
+      eq: function (p) {
+        return "ŷ = " + f3(p[0]) + " + " + f4(p[1]) + "(1 − e<sup>−" + f4(p[2]) + "x</sup>)";
+      }
+    },
+
+    expo: {
+      name: "Eksponensial Murni",
+      f: function (x, p) { return p[0] * Math.exp(p[1] * x); },
+      params: [
+        {
+          sym: "a", label: "a — skala",
+          init: function (c) { return Math.max(c.maxY, 1e-3); },
+          lo: function (c) { return Math.max(c.rangeY * 0.01, 1e-4); },
+          hi: function (c) { return c.rangeY * 4; },
+          step: function (c) { return Math.max(c.rangeY / 200, 1e-6); }
+        },
+        {
+          sym: "b", label: "b — laju",
+          init: function (c) { return 1 / Math.max(c.rangeX, 1); },
+          lo: function (c) { return -5 / Math.max(c.rangeX, 1); },
+          hi: function (c) { return 5 / Math.max(c.rangeX, 1); },
+          step: function (c) { return Math.max(0.05 / Math.max(c.rangeX, 1), 1e-6); }
+        }
+      ],
+      eq: function (p) {
+        return "ŷ = " + f4(p[0]) + " · e<sup>" + f4(p[1]) + "x</sup>";
+      }
+    },
+
+    linear: {
+      name: "Linear",
+      f: function (x, p) { return p[0] + p[1] * x; },
+      params: [
+        {
+          sym: "a", label: "a — intersep",
+          init: function (c) { return c.meanY; },
+          lo: function (c) { return c.minY - c.rangeY; },
+          hi: function (c) { return c.maxY + c.rangeY; },
+          step: function (c) { return Math.max(c.rangeY / 200, 1e-6); }
+        },
+        {
+          sym: "b", label: "b — kemiringan",
+          init: function (c) { return c.rangeY / Math.max(c.rangeX, 1); },
+          lo: function (c) { return -5 * c.rangeY / Math.max(c.rangeX, 1); },
+          hi: function (c) { return 5 * c.rangeY / Math.max(c.rangeX, 1); },
+          step: function (c) { return Math.max(c.rangeY / Math.max(c.rangeX, 1) / 200, 1e-6); }
+        }
+      ],
+      eq: function (p) {
+        return "ŷ = " + f3(p[0]) + " + " + f4(p[1]) + "x";
+      }
+    },
+
+    quad: {
+      name: "Polinomial Kuadratik",
+      f: function (x, p) { return p[0] + p[1] * x + p[2] * x * x; },
+      params: [
+        {
+          sym: "a", label: "a — konstanta",
+          init: function (c) { return c.meanY; },
+          lo: function (c) { return c.minY - c.rangeY; },
+          hi: function (c) { return c.maxY + c.rangeY; },
+          step: function (c) { return Math.max(c.rangeY / 200, 1e-6); }
+        },
+        {
+          sym: "b", label: "b — linear",
+          init: function (c) { return c.rangeY / Math.max(c.rangeX, 1); },
+          lo: function (c) { return -5 * c.rangeY / Math.max(c.rangeX, 1); },
+          hi: function (c) { return 5 * c.rangeY / Math.max(c.rangeX, 1); },
+          step: function (c) { return Math.max(c.rangeY / Math.max(c.rangeX, 1) / 200, 1e-6); }
+        },
+        {
+          sym: "c", label: "c — kuadratik",
+          init: function (c) { return c.rangeY / Math.max(c.rangeX * c.rangeX, 1e-3) / 20; },
+          lo: function (c) { return -2 * c.rangeY / Math.max(c.rangeX * c.rangeX, 1e-3); },
+          hi: function (c) { return 2 * c.rangeY / Math.max(c.rangeX * c.rangeX, 1e-3); },
+          step: function (c) { return Math.max(c.rangeY / Math.max(c.rangeX * c.rangeX, 1e-3) / 200, 1e-8); }
+        }
+      ],
+      eq: function (p) {
+        return "ŷ = " + f3(p[0]) + " + " + f4(p[1]) + "x + " + f4(p[2]) + "x²";
+      }
+    },
+
+    log: {
+      name: "Logaritmik",
+      f: function (x, p) { return p[0] + p[1] * Math.log(x + 1); },
+      params: [
+        {
+          sym: "a", label: "a — konstanta",
+          init: function (c) { return c.minY; },
+          lo: function (c) { return c.minY - c.rangeY; },
+          hi: function (c) { return c.maxY + c.rangeY; },
+          step: function (c) { return Math.max(c.rangeY / 200, 1e-6); }
+        },
+        {
+          sym: "b", label: "b — koefisien log",
+          init: function (c) { return c.rangeY / Math.log(Math.max(c.rangeX, 1) + 1); },
+          lo: function (c) { return -5 * c.rangeY / Math.max(Math.log(Math.max(c.rangeX, 1) + 1), 1e-3); },
+          hi: function (c) { return 5 * c.rangeY / Math.max(Math.log(Math.max(c.rangeX, 1) + 1), 1e-3); },
+          step: function (c) { return Math.max(c.rangeY / Math.max(Math.log(Math.max(c.rangeX, 1) + 1), 1e-3) / 200, 1e-6); }
+        }
+      ],
+      eq: function (p) {
+        return "ŷ = " + f3(p[0]) + " + " + f4(p[1]) + " · ln(x + 1)";
+      }
+    }
+  };
+
+  /* ============================================================
+     FITTING
+     ============================================================ */
+  function sseFor(model, pts, p) {
+    var s = 0;
+    for (var i = 0; i < pts.length; i++) {
+      var yh = model.f(pts[i].x, p);
+      if (!isFinite(yh)) return Infinity;
+      var d = pts[i].y - yh;
+      s += d * d;
+    }
+    return s;
+  }
+
+  function nelderMead(fn, x0, steps, iters) {
+    var n = x0.length;
+    var simplex = [x0.slice()];
+    var i, j;
+    for (i = 0; i < n; i++) {
+      var p = x0.slice();
+      p[i] += (steps[i] || 0.1);
+      simplex.push(p);
+    }
+    var vals = simplex.map(fn);
+
+    for (var it = 0; it < iters; it++) {
+      var order = vals.map(function (v, k) { return k; }).sort(function (a, b) { return vals[a] - vals[b]; });
+      simplex = order.map(function (k) { return simplex[k]; });
+      vals = order.map(function (k) { return vals[k]; });
+
+      if (!isFinite(vals[0])) break;
+      if (Math.abs(vals[n] - vals[0]) < 1e-12) break;
+
+      var centroid = new Array(n);
+      for (j = 0; j < n; j++) {
+        var s = 0;
+        for (i = 0; i < n; i++) s += simplex[i][j];
+        centroid[j] = s / n;
+      }
+
+      var reflect = new Array(n);
+      for (j = 0; j < n; j++) reflect[j] = centroid[j] + (centroid[j] - simplex[n][j]);
+      var fr = fn(reflect);
+
+      if (fr < vals[0]) {
+        var expand = new Array(n);
+        for (j = 0; j < n; j++) expand[j] = centroid[j] + 2 * (centroid[j] - simplex[n][j]);
+        var fe = fn(expand);
+        if (fe < fr) { simplex[n] = expand; vals[n] = fe; }
+        else { simplex[n] = reflect; vals[n] = fr; }
+      } else if (fr < vals[n - 1]) {
+        simplex[n] = reflect; vals[n] = fr;
+      } else {
+        var contract = new Array(n);
+        for (j = 0; j < n; j++) contract[j] = centroid[j] + 0.5 * (simplex[n][j] - centroid[j]);
+        var fc = fn(contract);
+        if (fc < vals[n]) { simplex[n] = contract; vals[n] = fc; }
+        else {
+          for (i = 1; i <= n; i++) {
+            for (j = 0; j < n; j++) simplex[i][j] = simplex[0][j] + 0.5 * (simplex[i][j] - simplex[0][j]);
+            vals[i] = fn(simplex[i]);
+          }
+        }
+      }
+    }
+    var best = 0;
+    for (i = 1; i <= n; i++) if (vals[i] < vals[best]) best = i;
+    return simplex[best];
+  }
+
+  function resetParams() {
+    var c = dataCtx();
+    params = MODELS[modelId].params.map(function (pr) { return pr.init(c); });
+  }
+
+  function fitModel() {
+    var model = MODELS[modelId];
+    var c = dataCtx();
     var pts = inRangePoints();
-    var n = pts.length;
-    var ymean = 0;
-    pts.forEach(function(p){ymean+=p[3];});
-    if(n>0) ymean/=n;
-    var sse=0,sst=0,within=0;
-    var residuals=[];
-    pts.forEach(function(p){
-      var pred = H*(1-Math.exp(-k*p[0]));
-      var res = p[3]-pred;
-      residuals.push([p[0],res]);
-      sse+=res*res;
-      sst+=(p[3]-ymean)*(p[3]-ymean);
-      if(Math.abs(res)<=1) within++;
+
+    var start = params.slice();
+    if (start.length !== model.params.length) {
+      start = model.params.map(function (pr) { return pr.init(c); });
+    }
+
+    var lo = model.params.map(function (pr) { return pr.lo(c); });
+    var hi = model.params.map(function (pr) { return pr.hi(c); });
+
+    start = start.map(function (v, i) {
+      if (!isFinite(v)) v = model.params[i].init(c);
+      return Math.min(hi[i], Math.max(lo[i], v));
     });
-    var r2 = sst>0 ? 1-sse/sst : (sst===0&&sse===0?1:0);
-    var rmse = n>0?Math.sqrt(sse/n):0;
-    var maxH = 0;
-    pts.forEach(function(p){if(p[3]>maxH)maxH=p[3];});
-    var tol = n>0?100*within/n:0;
-    return {n:n,maxH:maxH,sse:sse,sst:sst,r2:r2,rmse:rmse,tol:tol,residuals:residuals,pts:pts};
+
+    if (pts.length < 2) { params = start; return; }
+
+    var steps = start.map(function (v, i) {
+      return Math.max(Math.abs(v) * 0.2, (hi[i] - lo[i]) / 100, 1e-6);
+    });
+
+    var best = nelderMead(function (p) { return sseFor(model, pts, p); }, start.slice(), steps, 1200);
+
+    var fitted = best.map(function (v, i) {
+      if (!isFinite(v)) v = start[i];
+      return Math.min(hi[i], Math.max(lo[i], v));
+    });
+
+    if (sseFor(model, pts, fitted) <= sseFor(model, pts, start)) params = fitted;
+    else params = start;
   }
 
-  // ---- SVG chart helpers ----
-  function el(name,attrs){
-    var e=document.createElementNS("http://www.w3.org/2000/svg",name);
-    for(var a in attrs)e.setAttribute(a,attrs[a]);
-    return e;
+  /* ============================================================
+     STATS
+     ============================================================ */
+  function computeStats() {
+    var model = MODELS[modelId];
+    var r = getRange();
+
+    var perRow = rows.map(function (row) {
+      var x = num(row[xKey]), y = num(row[yKey]);
+      if (x === null || y === null) return null;
+      var yh = model.f(x, params);
+      if (!isFinite(yh)) return { x: x, y: y, yh: null, res: null, inRange: x >= r[0] && x <= r[1] };
+      return { x: x, y: y, yh: yh, res: y - yh, inRange: x >= r[0] && x <= r[1] };
+    });
+
+    var used = perRow.filter(function (p) { return p && p.inRange && p.yh !== null; });
+    var n = used.length;
+    var mean = 0, sse = 0, sst = 0, within = 0, maxY = 0, maxPred = 0, minY = Infinity;
+
+    used.forEach(function (p) {
+      mean += p.y;
+    });
+    if (n) mean /= n;
+
+    used.forEach(function (p) {
+      sse += p.res * p.res;
+      sst += (p.y - mean) * (p.y - mean);
+      if (Math.abs(p.res) <= EPS) within++;
+      if (p.y > maxY) maxY = p.y;
+      if (p.y < minY) minY = p.y;
+      if (p.yh > maxPred) maxPred = p.yh;
+    });
+    if (minY === Infinity) minY = 0;
+
+    var r2 = n ? (sst > 0 ? 1 - sse / sst : (sse === 0 ? 1 : 0)) : 0;
+    var rmse = n ? Math.sqrt(sse / n) : 0;
+
+    return {
+      perRow: perRow, used: used, n: n, r2: r2, rmse: rmse,
+      within: within, tolPct: n ? 100 * within / n : 0,
+      maxY: maxY, maxPred: maxPred, minY: minY
+    };
   }
-  function makeChart(container,w,h){
-    var svg = el("svg",{viewBox:"0 0 "+w+" "+h,width:w,height:h});
-    container.innerHTML="";
-    container.appendChild(svg);
+
+  function feasibility(r2) {
+    if (!isFinite(r2)) return { t: "–", c: "var(--muted)" };
+    if (r2 >= 0.95) return { t: "Sangat Baik", c: "var(--green)" };
+    if (r2 >= 0.85) return { t: "Baik", c: "var(--blue)" };
+    if (r2 >= 0.70) return { t: "Cukup", c: "var(--orange)" };
+    return { t: "Kurang", c: "#e74c3c" };
+  }
+
+  /* ============================================================
+     SVG HELPERS
+     ============================================================ */
+  function makeSVG(w, h) {
+    var svg = document.createElementNS(SVGNS, "svg");
+    svg.setAttribute("viewBox", "0 0 " + w + " " + h);
+    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
     return svg;
   }
-  function niceTicks(min,max,n){
-    var range=max-min;
-    if(range<=0) range=1;
-    var step=Math.pow(10,Math.floor(Math.log10(range/n)));
-    var err=range/(n*step);
-    if(err<1.5)step*=1; else if(err<3)step*=2; else if(err<7)step*=5; else step*=10;
-    var ticks=[];
-    var start=Math.ceil(min/step)*step;
-    for(var v=start;v<=max+1e-9;v+=step)ticks.push(v);
+  function lineEl(x1, y1, x2, y2, stroke, width, dash) {
+    var l = document.createElementNS(SVGNS, "line");
+    l.setAttribute("x1", x1); l.setAttribute("y1", y1);
+    l.setAttribute("x2", x2); l.setAttribute("y2", y2);
+    l.setAttribute("stroke", stroke); l.setAttribute("stroke-width", width);
+    if (dash) l.setAttribute("stroke-dasharray", dash);
+    return l;
+  }
+  function rectEl(x, y, w, h, fill, opacity) {
+    var r = document.createElementNS(SVGNS, "rect");
+    r.setAttribute("x", x); r.setAttribute("y", y);
+    r.setAttribute("width", Math.max(w, 0)); r.setAttribute("height", Math.max(h, 0));
+    r.setAttribute("fill", fill); r.setAttribute("opacity", opacity);
+    return r;
+  }
+  function textEl(svg, x, y, str, size, fill, anchor) {
+    var t = document.createElementNS(SVGNS, "text");
+    t.setAttribute("x", x); t.setAttribute("y", y);
+    t.setAttribute("font-size", size); t.setAttribute("fill", fill);
+    if (anchor) t.setAttribute("text-anchor", anchor);
+    t.setAttribute("font-family", "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif");
+    t.textContent = str;
+    svg.appendChild(t);
+    return t;
+  }
+  function niceTicks(min, max, count) {
+    var range = max - min;
+    if (!(range > 0)) range = 1;
+    var step = Math.pow(10, Math.floor(Math.log10(range / count)));
+    var err = range / (count * step);
+    if (err < 1.5) step *= 1;
+    else if (err < 3) step *= 2;
+    else if (err < 7) step *= 5;
+    else step *= 10;
+    var ticks = [];
+    var start = Math.ceil(min / step) * step;
+    for (var v = start; v <= max + 1e-9; v += step) {
+      ticks.push(Math.abs(v) < 1e-9 ? 0 : v);
+    }
     return ticks;
   }
 
-  function drawMain(){
-    var container=$("mainChart");
-    var W=640,Hh=360,m={l:48,r:18,t:14,b:38};
-    var svg=makeChart(container,W,Hh);
-    var allPts = data.filter(function(p){return p[0]!=null&&p[3]!=null&&!isNaN(p[0])&&!isNaN(p[3]);});
-    var r=getRange();
-    if(allPts.length===0){
-      svg.appendChild(el("text",{x:W/2,y:Hh/2,"text-anchor":"middle",fill:"#999","font-size":13})).textContent="Belum ada data. Tambahkan baris pada tabel.";
+  /* ============================================================
+     CHARTS
+     ============================================================ */
+  function drawMain() {
+    var host = $("mainChart");
+    host.innerHTML = "";
+    var W = 720, H = 372;
+    var m = { l: 54, r: 16, t: 14, b: 42 };
+    var svg = makeSVG(W, H);
+    host.appendChild(svg);
+
+    var pts = dataPoints();
+    if (!pts.length) {
+      textEl(svg, W / 2, H / 2, "Belum ada data — unggah CSV atau tambahkan baris", 12, "#95a5a6", "middle");
       return;
     }
-    var xs=allPts.map(function(p){return p[0];});
-    var ys=allPts.map(function(p){return p[3];});
-    var xmin=Math.min.apply(null,xs),xmax=Math.max.apply(null,xs);
-    var ymax=Math.max.apply(null,ys);
-    // include model curve max
-    var modelMax = H;
-    ymax=Math.max(ymax,modelMax);
-    var ymin=Math.min(0,Math.min.apply(null,ys));
-    if(xmax===xmin)xmax=xmin+1;
-    if(ymax===ymin)ymax=ymin+1;
-    var pad=(ymax-ymin)*0.08;
-    ymax+=pad;ymin-=pad;
-    var xScale=function(x){return m.l+(x-xmin)/(xmax-xmin)*(W-m.l-m.r);};
-    var yScale=function(y){return Hh-m.b-(y-ymin)/(ymax-ymin)*(Hh-m.t-m.b);};
 
-    // fitting range band
-    var x1=xScale(Math.max(r.tmin,xmin)),x2=xScale(Math.min(r.tmax,xmax));
-    svg.appendChild(el("rect",{x:x1,y:m.t,width:Math.max(0,x2-x1),height:Hh-m.t-m.b,fill:"#D1E2F5",opacity:.35,"stroke":"#1A59A0","stroke-dasharray":"4 3","stroke-width":1}));
+    var xs = pts.map(function (p) { return p.x; });
+    var ys = pts.map(function (p) { return p.y; });
+    var xmin = Math.min.apply(null, xs), xmax = Math.max.apply(null, xs);
+    if (xmax === xmin) xmax = xmin + 1;
+    var ymin = Math.min(0, Math.min.apply(null, ys));
+    var ymax = Math.max.apply(null, ys);
 
-    // grid + axes
-    var yticks=niceTicks(ymin,ymax,6);
-    yticks.forEach(function(t){
-      var y=yScale(t);
-      svg.appendChild(el("line",{x1:m.l,y1:y,x2:W-m.r,y2:y,class:"gridline"}));
-      var tx=el("text",{x:m.l-6,y:y+3,"text-anchor":"end",class:"axis"});tx.textContent=t.toFixed(t%1===0?0:1);svg.appendChild(tx);
-    });
-    var xticks=niceTicks(xmin,xmax,8);
-    xticks.forEach(function(t){
-      var x=xScale(t);
-      svg.appendChild(el("line",{x1:x,y1:m.t,x2:x,y2:Hh-m.b,class:"gridline"}));
-      var tx=el("text",{x:x,y:Hh-m.b+16,"text-anchor":"middle",class:"axis"});tx.textContent=t.toFixed(t%1===0?0:1);svg.appendChild(tx);
-    });
-    // axis lines
-    svg.appendChild(el("line",{x1:m.l,y1:Hh-m.b,x2:W-m.r,y2:Hh-m.b,class:"axisline"}));
-    svg.appendChild(el("line",{x1:m.l,y1:m.t,x2:m.l,y2:Hh-m.b,class:"axisline"}));
-    // axis labels
-    var xl=el("text",{x:W/2,y:Hh-6,"text-anchor":"middle",class:"axis","font-weight":"600"});xl.textContent="Waktu (s)";svg.appendChild(xl);
-    var yl=el("text",{x:14,y:Hh/2,"text-anchor":"middle",class:"axis","font-weight":"600",transform:"rotate(-90 14 "+Hh/2+")"});yl.textContent="Tinggi Buih (cm)";svg.appendChild(yl);
-
-    // model curve (yellow)
-    var path="";
-    var steps=120;
-    for(var i=0;i<=steps;i++){
-      var t=xmin+(xmax-xmin)*i/steps;
-      var y=H*(1-Math.exp(-k*t));
-      var px=xScale(t),py=yScale(y);
-      path+=(i===0?"M":"L")+px.toFixed(1)+","+py.toFixed(1)+" ";
+    var model = MODELS[modelId];
+    var curve = [];
+    for (var i = 0; i <= 160; i++) {
+      var xx = xmin + (xmax - xmin) * i / 160;
+      var yy = model.f(xx, params);
+      if (!isFinite(yy)) continue;
+      curve.push([xx, yy]);
+      if (yy > ymax) ymax = yy;
+      if (yy < ymin) ymin = yy;
     }
-    svg.appendChild(el("path",{d:path,fill:"none",stroke:"#FFC82D","stroke-width":3.2,"stroke-linecap":"round"}));
 
-    // data points
-    allPts.forEach(function(p){
-      var inR = p[0]>=r.tmin && p[0]<=r.tmax;
-      var cx=xScale(p[0]),cy=yScale(p[3]);
-      svg.appendChild(el("circle",{cx:cx,cy:cy,r:inR?4.5:3.5,fill:"#fff",stroke:"#1A59A0","stroke-width":inR?2.5:1.8}));
+    var pad = (ymax - ymin) * 0.08 || 1;
+    ymax += pad;
+    if (ymin > 0) ymin = 0;
+    if (ymin < 0) ymin -= pad * 0.4;
+
+    function X(x) { return m.l + (x - xmin) / (xmax - xmin) * (W - m.l - m.r); }
+    function Y(y) { return H - m.b - (y - ymin) / (ymax - ymin) * (H - m.t - m.b); }
+
+    var defs = document.createElementNS(SVGNS, "defs");
+    defs.innerHTML = '<linearGradient id="curveGrad" x1="0" y1="0" x2="1" y2="0">' +
+      '<stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#0984e3"/>' +
+      '</linearGradient>';
+    svg.appendChild(defs);
+
+    var yt = niceTicks(ymin, ymax, 5);
+    yt.forEach(function (t) {
+      svg.appendChild(lineEl(m.l, Y(t), W - m.r, Y(t), "#eef1f4", 1));
+      textEl(svg, m.l - 8, Y(t) + 3.5, (Math.abs(t) < 10 ? t.toFixed(1) : t.toFixed(0)), 10.5, "#95a5a6", "end");
+    });
+
+    var xt = niceTicks(xmin, xmax, 6);
+    xt.forEach(function (t) {
+      svg.appendChild(lineEl(X(t), m.t, X(t), H - m.b, "#eef1f4", 1));
+      textEl(svg, X(t), H - m.b + 17, String(Math.round(t * 10) / 10), 10.5, "#95a5a6", "middle");
+    });
+
+    svg.appendChild(lineEl(m.l, H - m.b, W - m.r, H - m.b, "#dfe6e9", 1.2));
+    svg.appendChild(lineEl(m.l, m.t, m.l, H - m.b, "#dfe6e9", 1.2));
+
+    textEl(svg, W / 2, H - 7, axisLabel(xKey), 11, "#7f8c8d", "middle");
+    var yl = textEl(svg, 14, H / 2, axisLabel(yKey), 11, "#7f8c8d", "middle");
+    yl.setAttribute("transform", "rotate(-90 14 " + (H / 2) + ")");
+
+    var r = getRange();
+    var bx1 = X(Math.max(r[0], xmin));
+    var bx2 = X(Math.min(r[1], xmax));
+    if (bx2 > bx1) svg.appendChild(rectEl(bx1, m.t, bx2 - bx1, H - m.t - m.b, "#4b2cbf", 0.05));
+
+    var d = "";
+    curve.forEach(function (p, k) {
+      d += (k ? "L" : "M") + X(p[0]).toFixed(1) + "," + Y(p[1]).toFixed(1) + " ";
+    });
+    if (d) {
+      var path = document.createElementNS(SVGNS, "path");
+      path.setAttribute("d", d);
+      path.setAttribute("fill", "none");
+      path.setAttribute("stroke", "url(#curveGrad)");
+      path.setAttribute("stroke-width", "3");
+      path.setAttribute("stroke-linecap", "round");
+      path.setAttribute("stroke-linejoin", "round");
+      svg.appendChild(path);
+    }
+
+    pts.forEach(function (p) {
+      var inR = p.x >= r[0] && p.x <= r[1];
+      var c = document.createElementNS(SVGNS, "circle");
+      c.setAttribute("cx", X(p.x));
+      c.setAttribute("cy", Y(p.y));
+      c.setAttribute("r", inR ? 4.6 : 3.6);
+      c.setAttribute("fill", "#ffffff");
+      c.setAttribute("stroke", inR ? "#0984e3" : "#b2bec3");
+      c.setAttribute("stroke-width", inR ? 2.4 : 1.6);
+      svg.appendChild(c);
     });
   }
 
-  function drawResiduals(m){
-    var container=$("resChart");
-    var W=280,Hh=220,m2={l:36,r:12,t:10,b:32};
-    var svg=makeChart(container,W,Hh);
-    var res=m.residuals;
-    if(res.length===0){
-      svg.appendChild(el("text",{x:W/2,y:Hh/2,"text-anchor":"middle",fill:"#999","font-size":12})).textContent="Tidak ada titik dalam rentang.";
+  function drawResidual(stats) {
+    var host = $("resChart");
+    host.innerHTML = "";
+    var W = 400, H = 208;
+    var m = { l: 44, r: 12, t: 12, b: 32 };
+    var svg = makeSVG(W, H);
+    host.appendChild(svg);
+
+    var pts = stats.used;
+    if (!pts.length) {
+      textEl(svg, W / 2, H / 2, "Tidak ada titik dalam rentang", 11.5, "#95a5a6", "middle");
       return;
     }
-    var xs=res.map(function(p){return p[0];});
-    var ys=res.map(function(p){return p[1];});
-    var xmin=Math.min.apply(null,xs),xmax=Math.max.apply(null,xs);
-    var ymax=Math.max(1.5,Math.max.apply(null,ys.map(Math.abs)));
-    var ymin=-ymax;
-    if(xmax===xmin)xmax=xmin+1;
-    var xScale=function(x){return m2.l+(x-xmin)/(xmax-xmin)*(W-m2.l-m2.r);};
-    var yScale=function(y){return Hh-m2.b-(y-ymin)/(ymax-ymin)*(Hh-m2.t-m2.b);};
 
-    // grid
-    var yticks=niceTicks(ymin,ymax,5);
-    yticks.forEach(function(t){
-      var y=yScale(t);
-      svg.appendChild(el("line",{x1:m2.l,y1:y,x2:W-m2.r,y2:y,class:"gridline"}));
-      var tx=el("text",{x:m2.l-5,y:y+3,"text-anchor":"end",class:"axis"});tx.textContent=t.toFixed(t%1===0?0:1);svg.appendChild(tx);
+    var xs = pts.map(function (p) { return p.x; });
+    var xmin = Math.min.apply(null, xs), xmax = Math.max.apply(null, xs);
+    if (xmax === xmin) xmax = xmin + 1;
+
+    var maxAbs = EPS * 1.25;
+    pts.forEach(function (p) {
+      if (Math.abs(p.res) > maxAbs) maxAbs = Math.abs(p.res);
     });
-    var xticks=niceTicks(xmin,xmax,5);
-    xticks.forEach(function(t){
-      var x=xScale(t);
-      svg.appendChild(el("line",{x1:x,y1:m2.t,x2:x,y2:Hh-m2.b,class:"gridline"}));
-      var tx=el("text",{x:x,y:Hh-m2.b+14,"text-anchor":"middle",class:"axis"});tx.textContent=t.toFixed(t%1===0?0:0);svg.appendChild(tx);
+    maxAbs *= 1.1;
+
+    var ymin = -maxAbs, ymax = maxAbs;
+    function X(x) { return m.l + (x - xmin) / (xmax - xmin) * (W - m.l - m.r); }
+    function Y(y) { return H - m.b - (y - ymin) / (ymax - ymin) * (H - m.t - m.b); }
+
+    svg.appendChild(rectEl(m.l, Y(EPS), W - m.l - m.r, Y(-EPS) - Y(EPS), "#00b894", 0.12));
+    svg.appendChild(lineEl(m.l, Y(EPS), W - m.r, Y(EPS), "#00b894", 1, "3 3"));
+    svg.appendChild(lineEl(m.l, Y(-EPS), W - m.r, Y(-EPS), "#00b894", 1, "3 3"));
+
+    var yt = niceTicks(ymin, ymax, 4);
+    yt.forEach(function (t) {
+      svg.appendChild(lineEl(m.l, Y(t), W - m.r, Y(t), "#eef1f4", 1));
+      textEl(svg, m.l - 7, Y(t) + 3.5, t.toFixed(1), 10, "#95a5a6", "end");
     });
-    // zero line
-    var zy=yScale(0);
-    svg.appendChild(el("line",{x1:m2.l,y1:zy,x2:W-m2.r,y2:zy,stroke:"#1A59A0","stroke-width":1.4}));
-    // ±1cm band
-    svg.appendChild(el("rect",{x:m2.l,y:yScale(1),width:W-m2.l-m2.r,height:yScale(-1)-yScale(1),fill:"#2e8b57",opacity:.1}));
-    svg.appendChild(el("line",{x1:m2.l,y1:yScale(1),x2:W-m2.r,y2:yScale(1),stroke:"#2e8b57","stroke-dasharray":"3 3","stroke-width":1}));
-    svg.appendChild(el("line",{x1:m2.l,y1:yScale(-1),x2:W-m2.r,y2:yScale(-1),stroke:"#2e8b57","stroke-dasharray":"3 3","stroke-width":1}));
-    svg.appendChild(el("line",{x1:m2.l,y1:m2.t,x2:m2.l,y2:Hh-m2.b,class:"axisline"}));
-    svg.appendChild(el("line",{x1:m2.l,y1:Hh-m2.b,x2:W-m2.r,y2:Hh-m2.b,class:"axisline"}));
-    var xl=el("text",{x:W/2,y:Hh-4,"text-anchor":"middle",class:"axis"});xl.textContent="Waktu (s)";svg.appendChild(xl);
-    var yl=el("text",{x:10,y:Hh/2,"text-anchor":"middle",class:"axis",transform:"rotate(-90 10 "+Hh/2+")"});yl.textContent="Residu (cm)";svg.appendChild(yl);
-    // points
-    res.forEach(function(p){
-      var cx=xScale(p[0]),cy=yScale(p[1]);
-      var ok=Math.abs(p[1])<=1;
-      svg.appendChild(el("circle",{cx:cx,cy:cy,r:3.5,fill:ok?"#1A59A0":"#e74c3c",stroke:"#fff","stroke-width":1}));
+
+    svg.appendChild(lineEl(m.l, H - m.b, W - m.r, H - m.b, "#dfe6e9", 1.2));
+    svg.appendChild(lineEl(m.l, m.t, m.l, H - m.b, "#dfe6e9", 1.2));
+    svg.appendChild(lineEl(m.l, Y(0), W - m.r, Y(0), "#4b2cbf", 1.2));
+
+    textEl(svg, W / 2, H - 6, axisLabel(xKey), 10.5, "#7f8c8d", "middle");
+
+    pts.forEach(function (p) {
+      var ok = Math.abs(p.res) <= EPS;
+      var c = document.createElementNS(SVGNS, "circle");
+      c.setAttribute("cx", X(p.x));
+      c.setAttribute("cy", Y(p.res));
+      c.setAttribute("r", 3.6);
+      c.setAttribute("fill", ok ? "#4b2cbf" : "#e74c3c");
+      c.setAttribute("stroke", "#ffffff");
+      c.setAttribute("stroke-width", 1.2);
+      svg.appendChild(c);
     });
   }
 
-  // ---- Interpretation ----
-  function buildInterpretation(m){
-    var ctx=contextValues();
-    var r2str=m.r2.toFixed(2);
-    var quality = m.r2>=0.9?"sangat baik":(m.r2>=0.7?"cukup baik":(m.r2>=0.4?"lemah":"buruk"));
-    var modelEq='<span class="mi"><i>h</i>(<i>t</i>) = '+H.toFixed(2)+'(1 − <span class="up">e</span><sup>−'+k.toFixed(3)+'<i>t</i></sup>)</span>';
-    var Hm='<span class="mi"><i>H</i> = '+H.toFixed(2)+' cm</span>';
-    var km='<span class="mi"><i>k</i> = '+k.toFixed(3)+' s<sup>−1</sup></span>';
-    var r2m='<span class="mi"><i>R</i><sup>2</sup> = '+r2str+'</span>';
-    var rmsem='<span class="mi">RMSE = '+m.rmse.toFixed(2)+' cm</span>';
-    var ssem='<span class="mi">SSE = '+m.sse.toFixed(2)+'</span>';
-    var sstm='<span class="mi">SST = '+m.sst.toFixed(2)+'</span>';
-    var kvar='<span class="mi"><i>k</i></span>';
-    var html =
-      '<p><span class="tag">Ringkasan</span>Pada percobaan '+esc(ctx.trial)+' dengan tablet '+esc(ctx.tablet)+', volume air '+esc(ctx.vol)+' mL, dan suhu '+esc(ctx.temp)+' °C, terdapat '+m.n+' pengamatan dalam rentang fitting. Tinggi buih maksimum tercatat '+m.maxH.toFixed(2)+' cm.</p>'+
-      '<p><span class="tag">Model</span>Model '+modelEq+' dengan '+Hm+' dan '+km+' memberikan kesesuaian '+quality+' ('+r2m+', '+rmsem+'). Di sini '+kvar+' merupakan parameter kenaikan tinggi buih pada kondisi percobaan ini — bukan konstanta laju reaksi kimia, karena menentukannya sebagai konstanta laju memerlukan pengukuran kimia tambahan (konsentrasi reaktan, stoikiometri, dan orde reaksi).</p>'+
-      '<p><span class="tag">Residu</span>'+ssem+', '+sstm+'. Sebanyak '+m.tol.toFixed(0)+'% residu berada dalam toleransi ±1 cm. '+(m.tol>=80?'Sebagian besar titik dekat dengan model.':(m.tol>=50?'Cukup banyak titik menyimpang dari model.':'Banyak titik menyimpang — pertimbangkan menyesuaikan rentang fitting atau parameter.'))+'</p>'+
-      '<p style="color:var(--muted);font-size:12px;margin-top:10px">Catatan: model ini bersifat deskriptif untuk fase kenaikan buih. Titik di luar rentang fitting tetap ditampilkan sebagai pembanding visual.</p>';
-    $("interpText").innerHTML=html;
+  function drawMini(stats) {
+    var d = stats.maxY, md = stats.maxPred;
+    var mx = Math.max(d, md, 1e-6);
+    $("miniBarData").style.height = Math.max(4, Math.min(100, 100 * d / mx)) + "%";
+    $("miniBarModel").style.height = Math.max(4, Math.min(100, 100 * md / mx)) + "%";
+    $("miniData").textContent = d.toFixed(2);
+    $("miniModel").textContent = md.toFixed(2);
   }
-  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
 
-  // ---- Refresh ----
-  function refresh(){
-    var m = computeMetrics();
-    $("m-obs").textContent=m.n;
-    $("m-max").textContent=m.maxH.toFixed(2);
-    var r2el=$("m-r2");r2el.textContent=m.r2.toFixed(2);r2el.className="val"+(m.r2<0?" neg":"");
-    $("m-rmse").textContent=m.rmse.toFixed(2);
-    var tolel=$("m-tol");tolel.textContent=m.tol.toFixed(0)+"%";tolel.className="val"+(m.tol>=80?" ok":"");
-    $("formulaBox").innerHTML='<span class="mi"><i>h</i>(<i>t</i>) = '+H.toFixed(2)+'(1 − <span class="up">e</span><sup>−'+k.toFixed(3)+'<i>t</i></sup>)</span>';
+  /* ============================================================
+     PANELS
+     ============================================================ */
+  function renderMetrics(stats) {
+    $("m-obs").textContent = stats.n;
+    $("m-r2").textContent = stats.n ? stats.r2.toFixed(3) : "–";
+    $("m-rmse").textContent = stats.n ? stats.rmse.toFixed(3) : "–";
+    $("m-model").textContent = MODELS[modelId].name;
+    $("m-eps").textContent = "±" + EPS.toFixed(1);
+  }
+
+  function renderSide(stats) {
+    $("withinEps").textContent = stats.n ? stats.tolPct.toFixed(0) + "%" : "–";
+    $("withinBar").style.width = (stats.n ? stats.tolPct : 0) + "%";
+    var f = feasibility(stats.r2);
+    var el = $("feasibility");
+    el.textContent = f.t;
+    el.style.color = f.c;
+  }
+
+  function renderEq() {
+    $("eqBox").innerHTML = MODELS[modelId].eq(params);
+  }
+
+  function renderSliders() {
+    var model = MODELS[modelId];
+    var c = dataCtx();
+    var box = $("paramSliders");
+    box.innerHTML = "";
+
+    model.params.forEach(function (pr, i) {
+      var lo = pr.lo(c), hi = pr.hi(c), step = pr.step(c);
+      if (!isFinite(lo)) lo = 0;
+      if (!isFinite(hi)) hi = lo + 1;
+      if (hi <= lo) hi = lo + 1;
+      if (!(step > 0)) step = (hi - lo) / 100;
+
+      var val = params[i];
+      if (!isFinite(val)) val = pr.init(c);
+      val = Math.min(hi, Math.max(lo, val));
+
+      var row = document.createElement("div");
+      row.className = "slider-row";
+      row.innerHTML =
+        '<div class="slider-top"><span>' + esc(pr.label) + '</span>' +
+        '<b data-val="' + i + '">' + f4(val) + '</b></div>' +
+        '<input type="range" data-i="' + i + '" min="' + lo + '" max="' + hi + '" step="' + step + '" value="' + val + '">';
+      box.appendChild(row);
+    });
+
+    box.querySelectorAll('input[type="range"]').forEach(function (inp) {
+      inp.addEventListener("input", function () {
+        var i = parseInt(inp.getAttribute("data-i"), 10);
+        params[i] = parseFloat(inp.value);
+        setMode("manual");
+        var lab = box.querySelector('[data-val="' + i + '"]');
+        if (lab) lab.textContent = f4(params[i]);
+        refresh();
+      });
+    });
+  }
+
+  function syncSliders() {
+    var box = $("paramSliders");
+    if (!box) return;
+    box.querySelectorAll('input[type="range"]').forEach(function (inp) {
+      var i = parseInt(inp.getAttribute("data-i"), 10);
+      if (!isFinite(params[i])) return;
+      var lo = parseFloat(inp.getAttribute("min"));
+      var hi = parseFloat(inp.getAttribute("max"));
+      inp.value = Math.min(hi, Math.max(lo, params[i]));
+      var lab = box.querySelector('[data-val="' + i + '"]');
+      if (lab) lab.textContent = f4(params[i]);
+    });
+  }
+
+  function renderInterp(stats) {
+    var f = feasibility(stats.r2);
+    var model = MODELS[modelId];
+    var html = "";
+
+    html += "<p>Model <span class='hi'>" + esc(model.name) + "</span> diterapkan pada hubungan antara " +
+      "<span class='hi'>" + esc(colLabel(xKey)) + "</span> (x) dan <span class='hi'>" +
+      esc(colLabel(yKey)) + "</span> (y). Sebanyak " + stats.n +
+      " pengamatan berada di dalam rentang fitting.</p>";
+
+    html += "<p class='eqline'>" + model.eq(params) + "</p>";
+
+    html += "<p>Kesesuaian model ditunjukkan oleh R² = <span class='hi'>" +
+      (stats.n ? stats.r2.toFixed(3) : "–") + "</span> dengan RMSE = <span class='hi'>" +
+      (stats.n ? stats.rmse.toFixed(3) : "–") + "</span> satuan. Sebanyak <span class='hi'>" +
+      stats.tolPct.toFixed(0) + "%</span> residual berada dalam toleransi ±" + EPS.toFixed(1) +
+      ", sehingga kelayakan model tergolong <span class='hi'>" + f.t + "</span>.</p>";
+
+    html += "<p class='note'>Nilai prediksi dihitung dari parameter model aktif. Pada mode Manual, parameter " +
+      "diatur melalui slider; pada mode Best Fit, parameter diestimasi dengan meminimalkan jumlah kuadrat residual " +
+      "pada rentang data yang dipilih.</p>";
+
+    $("interp").innerHTML = html;
+  }
+
+  /* ============================================================
+     TABLE
+     ============================================================ */
+  function renderTable() {
+    $("thX").textContent = colLabel(xKey) + (colByKey(xKey) && colByKey(xKey).unit ? " (" + colByKey(xKey).unit + ")" : "");
+    $("thY").textContent = colLabel(yKey) + (colByKey(yKey) && colByKey(yKey).unit ? " (" + colByKey(yKey).unit + ")" : "");
+
+    var body = $("tableBody");
+    body.innerHTML = "";
+
+    rows.forEach(function (row, i) {
+      var x = num(row[xKey]);
+      var y = num(row[yKey]);
+      var tr = document.createElement("tr");
+      tr.setAttribute("data-row", i);
+      tr.innerHTML =
+        '<td class="idx">' + (i + 1) + '</td>' +
+        '<td><input class="cell" type="number" step="any" data-i="' + i + '" data-k="x" value="' + (x === null ? "" : x) + '"></td>' +
+        '<td><input class="cell" type="number" step="any" data-i="' + i + '" data-k="y" value="' + (y === null ? "" : y) + '"></td>' +
+        '<td class="num pred">–</td>' +
+        '<td class="num res">–</td>' +
+        '<td><button class="del-btn" data-i="' + i + '" title="Hapus baris">×</button></td>';
+      body.appendChild(tr);
+    });
+  }
+
+  function updateTableCells(stats) {
+    var trs = $("tableBody").children;
+    stats.perRow.forEach(function (p, i) {
+      var tr = trs[i];
+      if (!tr) return;
+      var pc = tr.querySelector(".pred");
+      var rc = tr.querySelector(".res");
+      if (!p || p.yh === null) {
+        pc.textContent = "–";
+        rc.textContent = "–";
+        rc.className = "num res";
+        return;
+      }
+      pc.textContent = p.yh.toFixed(3);
+      rc.textContent = (p.res >= 0 ? "+" : "") + p.res.toFixed(3);
+      rc.className = "num res " + (Math.abs(p.res) <= EPS ? "ok" : "bad");
+    });
+  }
+
+  /* ============================================================
+     SELECTS / RANGE
+     ============================================================ */
+  function buildVarSelects() {
+    var opts = columns.map(function (c) {
+      return '<option value="' + esc(c.key) + '">' + esc(c.label) + '</option>';
+    }).join("");
+    $("varX").innerHTML = opts;
+    $("varY").innerHTML = opts;
+    $("varX").value = xKey;
+    $("varY").value = yKey;
+  }
+
+  function buildModelSelect() {
+    var opts = Object.keys(MODELS).map(function (k) {
+      return '<option value="' + k + '">' + esc(MODELS[k].name) + '</option>';
+    }).join("");
+    $("modelSel").innerHTML = opts;
+    $("modelSel").value = modelId;
+  }
+
+  function resetRange() {
+    var pts = dataPoints();
+    if (!pts.length) {
+      $("tmin").value = "";
+      $("tmax").value = "";
+      return;
+    }
+    var xs = pts.map(function (p) { return p.x; });
+    $("tmin").value = Math.min.apply(null, xs);
+    $("tmax").value = Math.max.apply(null, xs);
+  }
+
+  function updateRangeUnit() {
+    var c = colByKey(xKey);
+    $("rangeUnit").textContent = c && c.unit ? c.unit : "";
+  }
+
+  /* ============================================================
+     REFRESH
+     ============================================================ */
+  function refresh() {
+    var stats = computeStats();
+    renderMetrics(stats);
+    renderEq();
     drawMain();
-    drawResiduals(m);
-    buildInterpretation(m);
+    drawResidual(stats);
+    drawMini(stats);
+    renderSide(stats);
+    updateTableCells(stats);
+    renderInterp(stats);
   }
 
-  // init
-  renderTable();
-  setMode("manual");
-  refresh();
-  window.addEventListener("resize",refresh);
+  function setMode(m) {
+    mode = m;
+    $("btnBest").classList.toggle("active", m === "best");
+    $("btnManual").classList.toggle("active", m === "manual");
+  }
+
+  function onDataEdit() {
+    if (mode === "best") {
+      fitModel();
+      syncSliders();
+    }
+    refresh();
+  }
+
+  /* ============================================================
+     CSV
+     ============================================================ */
+  function parseCSV(text) {
+    var lines = text.split(/\r?\n/).filter(function (l) { return l.trim() !== ""; });
+    if (!lines.length) { alert("File CSV kosong."); return false; }
+
+    var semi = (lines[0].match(/;/g) || []).length;
+    var comma = (lines[0].match(/,/g) || []).length;
+    var tab = (lines[0].match(/\t/g) || []).length;
+    var delim = ",";
+    if (tab > comma && tab >= semi) delim = "\t";
+    else if (semi > comma) delim = ";";
+
+    function splitLine(line) {
+      if (delim !== ",") {
+        return line.split(delim).map(function (c) { return c.trim().replace(/^"|"$/g, ""); });
+      }
+      var out = [], cur = "", inQ = false;
+      for (var i = 0; i < line.length; i++) {
+        var ch = line.charAt(i);
+        if (ch === '"') { inQ = !inQ; continue; }
+        if (ch === "," && !inQ) { out.push(cur.trim()); cur = ""; continue; }
+        cur += ch;
+      }
+      out.push(cur.trim());
+      return out;
+    }
+
+    var head = splitLine(lines[0]);
+    var looksHeader = head.some(function (h) {
+      return h !== "" && !isFinite(parseFloat(String(h).replace(",", ".")));
+    });
+
+    var used = {};
+    var newColumns, startIdx;
+
+    if (looksHeader) {
+      newColumns = head.map(function (h, i) {
+        var label = h || ("Kolom " + (i + 1));
+        var base = String(label).toLowerCase().trim().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
+        if (!base) base = "kolom_" + (i + 1);
+        var key = base, n = 1;
+        while (used[key]) { n++; key = base + "_" + n; }
+        used[key] = true;
+        return { key: key, label: label, unit: "" };
+      });
+      startIdx = 1;
+    } else {
+      newColumns = head.map(function (h, i) {
+        var key = "kolom_" + (i + 1);
+        used[key] = true;
+        return { key: key, label: "Kolom " + (i + 1), unit: "" };
+      });
+      startIdx = 0;
+    }
+
+    var newRows = [];
+    for (var li = startIdx; li < lines.length; li++) {
+      var vals = splitLine(lines[li]);
+      if (!vals.length || vals.every(function (v) { return v === ""; })) continue;
+      var row = {};
+      newColumns.forEach(function (col, j) {
+        var raw = vals[j];
+        if (raw === undefined || raw === "") { row[col.key] = null; return; }
+        var n = parseFloat(String(raw).replace(",", "."));
+        row[col.key] = isFinite(n) ? n : raw;
+      });
+      newRows.push(row);
+    }
+
+    if (!newRows.length) { alert("Tidak ada baris data yang dapat dibaca."); return false; }
+
+    var numeric = newColumns.filter(function (c) {
+      return newRows.some(function (r) { return typeof r[c.key] === "number"; });
+    });
+    if (!numeric.length) { alert("File CSV tidak memuat kolom numerik."); return false; }
+
+    columns = newColumns;
+    rows = newRows;
+    xKey = numeric[0].key;
+    yKey = (numeric[1] || numeric[0]).key;
+
+    buildVarSelects();
+    updateRangeUnit();
+    resetRange();
+    resetParams();
+    if (mode === "best") fitModel();
+    renderTable();
+    renderSliders();
+    refresh();
+    return true;
+  }
+
+  function exportCSV() {
+    var stats = computeStats();
+    var out = [["No", colLabel(xKey), colLabel(yKey), "Prediksi", "Residual"].join(",")];
+    stats.perRow.forEach(function (p, i) {
+      if (!p) { out.push([i + 1, "", "", "", ""].join(",")); return; }
+      out.push([
+        i + 1,
+        p.x,
+        p.y,
+        p.yh === null ? "" : p.yh.toFixed(6),
+        p.res === null ? "" : p.res.toFixed(6)
+      ].join(","));
+    });
+
+    var blob = new Blob(["\ufeff" + out.join("\n")], { type: "text/csv;charset=utf-8;" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "modeling_data.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
+  }
+
+  /* ============================================================
+     EVENTS
+     ============================================================ */
+  $("varX").addEventListener("change", function () {
+    xKey = this.value;
+    updateRangeUnit();
+    resetRange();
+    resetParams();
+    if (mode === "best") fitModel();
+    renderTable();
+    renderSliders();
+    refresh();
+  });
+
+  $("varY").addEventListener("change", function () {
+    yKey = this.value;
+    resetParams();
+    if (mode === "best") fitModel();
+    renderTable();
+    renderSliders();
+    refresh();
+  });
+
+  $("modelSel").addEventListener("change", function () {
+    modelId = this.value;
+    resetParams();
+    if (mode === "best") fitModel();
+    renderSliders();
+    refresh();
+  });
+
+  ["tmin", "tmax"].forEach(function (id) {
+    $(id).addEventListener("input", function () {
+      if (mode === "best") {
+        fitModel();
+        syncSliders();
+      }
+      refresh();
+    });
+  });
+
+  $("btnBest").addEventListener("click", function () {
+    setMode("best");
+    fitModel();
+    syncSliders();
+    refresh();
+  });
+
+  $("btnManual").addEventListener("click", function () {
+    setMode("manual");
+    refresh();
+  });
+
+  $("tableBody").addEventListener("input", function (e) {
+    var t = e.target;
+    if (!t.classList || !t.classList.contains("cell")) return;
+    var i = parseInt(t.getAttribute("data-i"), 10);
+    var k = t.getAttribute("data-k");
+    var key = k === "x" ? xKey : yKey;
+    if (t.value === "") {
+      rows[i][key] = null;
+    } else {
+      var n = parseFloat(t.value);
+      rows[i][key] = isFinite(n) ? n : null;
+    }
+    onDataEdit();
+  });
+
+  $("tableBody").addEventListener("click", function (e) {
+    if (!e.target.classList || !e.target.classList.contains("del-btn")) return;
+    var i = parseInt(e.target.getAttribute("data-i"), 10);
+    rows.splice(i, 1);
+    renderTable();
+    onDataEdit();
+  });
+
+  $("addRow").addEventListener("click", function () {
+    var row = {};
+    columns.forEach(function (c) { row[c.key] = null; });
+    rows.push(row);
+    renderTable();
+    refresh();
+  });
+
+  $("clearRows").addEventListener("click", function () {
+    if (!rows.length) return;
+    if (!confirm("Kosongkan semua data?")) return;
+    rows = [];
+    renderTable();
+    if (mode === "best") {
+      fitModel();
+      syncSliders();
+    }
+    refresh();
+  });
+
+  $("csvFile").addEventListener("change", function (e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function (ev) { parseCSV(String(ev.target.result)); };
+    reader.readAsText(file);
+    e.target.value = "";
+  });
+
+  $("expExcel").addEventListener("click", exportCSV);
+  $("expPdf").addEventListener("click", function () { window.print(); });
+
+  window.addEventListener("resize", function () {
+    drawMain();
+    drawResidual(computeStats());
+  });
+
+  /* ============================================================
+     INIT
+     ============================================================ */
+  function initDate() {
+    var M = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+    var d = new Date();
+    var dd = String(d.getDate()).padStart(2, "0");
+    $("analysisDate").textContent = dd + "-" + M[d.getMonth()] + "-" + d.getFullYear();
+  }
+
+  function init() {
+    buildVarSelects();
+    buildModelSelect();
+    initDate();
+    updateRangeUnit();
+    setMode("best");
+    resetRange();
+    resetParams();
+    fitModel();
+    renderTable();
+    renderSliders();
+    refresh();
+  }
+
+  init();
 })();
 </script>
 </body>
