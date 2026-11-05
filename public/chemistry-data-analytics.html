@@ -15,11 +15,13 @@
     --green:#00b894;
     --orange:#e67e22;
     --violet:#6c5ce7;
-    --ink:#2d3436;
-    --ink-head:#1e272e;
-    --muted:#7f8c8d;
-    --line:#dfe6e9;
-    --bg:#f4f6f9;
+    --navy:#22304a;
+    --navy-deep:#182238;
+    --ink:#33415c;
+    --ink-head:#1b2740;
+    --muted:#7b8794;
+    --line:#dde3ec;
+    --bg:#eef1f7;
     --card:#ffffff;
   }
   *{box-sizing:border-box;}
@@ -37,7 +39,8 @@
 
   /* ============ SIDEBAR ============ */
   .sidebar{
-    background:var(--purple);color:#fff;padding:20px 16px;display:flex;flex-direction:column;gap:16px;
+    background:linear-gradient(180deg,#4b2cbf 0%,#3a2199 55%,#241a5e 100%);color:#fff;
+    padding:20px 16px;display:flex;flex-direction:column;gap:16px;
     position:sticky;top:0;height:100vh;overflow-y:auto;
   }
   .sb-head{
@@ -45,15 +48,21 @@
     display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.18);
     opacity:.95;
   }
-  .sb-head .dot{width:8px;height:8px;border-radius:50%;background:var(--yellow);display:inline-block;}
+  .sb-head .dot{width:8px;height:8px;border-radius:50%;background:#ffffff;display:inline-block;}
   .sb-item .sb-label{
-    font-size:10px;text-transform:uppercase;letter-spacing:.8px;opacity:.7;font-weight:700;margin-bottom:6px;
+    display:flex;align-items:center;gap:7px;
+    font-size:10px;text-transform:uppercase;letter-spacing:.8px;opacity:.8;font-weight:700;margin-bottom:6px;
   }
+  .sb-ic{
+    width:22px;height:22px;border-radius:7px;background:rgba(255,255,255,.16);
+    display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .sb-ic svg{width:12px;height:12px;}
   .sb-select,.sb-input{
     width:100%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.26);color:#fff;
     border-radius:8px;padding:8px 9px;font-size:12.5px;font-weight:600;outline:none;
   }
-  .sb-select:focus,.sb-input:focus{border-color:var(--yellow);background:rgba(255,255,255,.18);}
+  .sb-select:focus,.sb-input:focus{border-color:rgba(255,255,255,.85);background:rgba(255,255,255,.18);}
   .sb-select option{color:#1e272e;background:#fff;}
   .sb-input::-webkit-outer-spin-button,.sb-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
   .sb-input{-moz-appearance:textfield;appearance:textfield;}
@@ -71,7 +80,7 @@
     display:block;text-align:center;border:1.5px dashed rgba(255,255,255,.45);border-radius:8px;
     padding:10px 8px;font-size:11.5px;font-weight:700;cursor:pointer;transition:all .15s;
   }
-  .sb-upload:hover{background:rgba(255,255,255,.12);border-color:var(--yellow);}
+  .sb-upload:hover{background:rgba(255,255,255,.12);border-color:#ffffff;}
   .sb-mini{
     margin-top:auto;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);
     border-radius:10px;padding:12px;
@@ -87,23 +96,26 @@
     display:flex;align-items:flex-end;overflow:hidden;
   }
   .mini-bar{width:100%;border-radius:4px 4px 0 0;transition:height .25s ease;}
-  .mini-bar.data{background:#cbb8ff;}
-  .mini-bar.model{background:#7cc4ff;}
+  .mini-bar.data{background:#c3b2ff;}
+  .mini-bar.model{background:#8fa3c9;}
   .mini-vals{display:flex;justify-content:center;gap:24px;font-size:11px;font-weight:700;margin-top:6px;}
 
   /* ============ TOPBAR ============ */
   .topbar{
     display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px;
-    padding:15px 26px;background:#fff;border-bottom:1px solid var(--line);
+    padding:15px 26px;
+    background:linear-gradient(100deg,#4b2cbf 0%,#3b2394 55%,#22304a 100%);
+    border-bottom:3px solid #182238;
+    box-shadow:0 16px 32px -26px rgba(24,34,56,.9);
   }
-  .brand{height:42px;width:auto;object-fit:contain;}
+  .brand{height:40px;width:auto;object-fit:contain;background:#fff;padding:4px;border-radius:8px;}
   .titlewrap{text-align:center;}
   .titlewrap h1{
-    font-size:15px;letter-spacing:1.4px;font-weight:800;color:var(--ink-head);
+    font-size:15px;letter-spacing:1.4px;font-weight:800;color:#ffffff;
     display:flex;align-items:center;justify-content:center;gap:8px;text-transform:uppercase;
   }
-  .titlewrap h1 svg{color:var(--purple);}
-  .titlewrap p{font-size:11.5px;color:var(--muted);margin-top:3px;}
+  .titlewrap h1 svg{color:#ffffff;}
+  .titlewrap p{font-size:11.5px;color:rgba(255,255,255,.74);margin-top:3px;}
   .topbar-right{width:40px;}
 
   /* ============ CONTENT ============ */
@@ -144,8 +156,8 @@
   #mainChart svg,#resChart svg{display:block;width:100%;height:auto;overflow:visible;}
   .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:8px;}
   .legend .item{display:flex;align-items:center;gap:6px;}
-  .legend .dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--blue);background:#fff;}
-  .legend .sw{width:18px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--yellow),var(--blue));}
+  .legend .dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--navy);background:#fff;}
+  .legend .sw{width:18px;height:3px;border-radius:2px;background:linear-gradient(90deg,#8b6bff,var(--navy));}
   .legend .band{width:16px;height:10px;border:1px dashed rgba(75,44,191,.5);background:rgba(75,44,191,.06);border-radius:2px;}
 
   /* model card */
@@ -260,17 +272,26 @@
     <div class="sb-head"><span class="dot"></span>Dashboard</div>
 
     <div class="sb-item">
-      <div class="sb-label">Variabel X</div>
+      <div class="sb-label">
+        <span class="sb-ic"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h10M11 4l2 2-2 2"/><path d="M15 12H5M7 10l-2 2 2 2"/></svg></span>
+        Variabel X
+      </div>
       <select id="varX" class="sb-select"></select>
     </div>
 
     <div class="sb-item">
-      <div class="sb-label">Variabel Y</div>
+      <div class="sb-label">
+        <span class="sb-ic"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 2.5h5"/><path d="M7.5 2.5v4L4.8 12a1.6 1.6 0 0 0 1.4 2.4h5.6A1.6 1.6 0 0 0 13.2 12L10.5 6.5v-4"/></svg></span>
+        Variabel Y
+      </div>
       <select id="varY" class="sb-select"></select>
     </div>
 
     <div class="sb-item">
-      <div class="sb-label">Rentang Data</div>
+      <div class="sb-label">
+        <span class="sb-ic"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="6"/><path d="M9 5.6V9l2.4 1.5"/></svg></span>
+        Rentang Data
+      </div>
       <div class="range-row">
         <input type="number" id="tmin" class="sb-input" step="any">
         <span class="sep">–</span>
@@ -280,12 +301,18 @@
     </div>
 
     <div class="sb-item">
-      <div class="sb-label">Fungsi Matematika</div>
+      <div class="sb-label">
+        <span class="sb-ic"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 3H6l4 6-4 6h6.5"/></svg></span>
+        Fungsi Matematika
+      </div>
       <select id="modelSel" class="sb-select"></select>
     </div>
 
     <div class="sb-item">
-      <div class="sb-label">Mode Parameter</div>
+      <div class="sb-label">
+        <span class="sb-ic"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 6h12M3 12h12"/><circle cx="7" cy="6" r="1.7"/><circle cx="12" cy="12" r="1.7"/></svg></span>
+        Mode Parameter
+      </div>
       <div class="mode-btns">
         <button class="mode-btn active" id="btnBest">Best Fit</button>
         <button class="mode-btn" id="btnManual">Manual</button>
@@ -330,7 +357,7 @@
       <!-- METRICS -->
       <div class="metrics">
         <div class="metric">
-          <div class="ic" style="background:var(--violet)">
+          <div class="ic" style="background:#4b2cbf">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 12h4l3 8 4-16 3 8h4"/>
             </svg>
@@ -339,7 +366,7 @@
         </div>
 
         <div class="metric">
-          <div class="ic" style="background:var(--blue)">
+          <div class="ic" style="background:#22304a">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2"/>
             </svg>
@@ -348,7 +375,7 @@
         </div>
 
         <div class="metric">
-          <div class="ic" style="background:var(--green)">
+          <div class="ic" style="background:#6c5ce7">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
               <path d="M5 20V12M12 20V5M19 20v-5"/>
             </svg>
@@ -357,7 +384,7 @@
         </div>
 
         <div class="metric">
-          <div class="ic" style="background:var(--orange)">
+          <div class="ic" style="background:#2f3f5c">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/>
             </svg>
@@ -366,7 +393,7 @@
         </div>
 
         <div class="metric">
-          <div class="ic" style="background:var(--purple)">
+          <div class="ic" style="background:#3a2199">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
               <path d="M4 7h16M4 12h16M4 17h16"/>
               <circle cx="9" cy="7" r="2" fill="currentColor" stroke="none"/>
@@ -871,7 +898,7 @@
   function feasibility(r2) {
     if (!isFinite(r2)) return { t: "–", c: "var(--muted)" };
     if (r2 >= 0.95) return { t: "Sangat Baik", c: "var(--green)" };
-    if (r2 >= 0.85) return { t: "Baik", c: "var(--blue)" };
+    if (r2 >= 0.85) return { t: "Baik", c: "var(--navy)" };
     if (r2 >= 0.70) return { t: "Cukup", c: "var(--orange)" };
     return { t: "Kurang", c: "#e74c3c" };
   }
@@ -940,7 +967,7 @@
 
     var pts = dataPoints();
     if (!pts.length) {
-      textEl(svg, W / 2, H / 2, "Belum ada data — unggah CSV atau tambahkan baris", 12, "#95a5a6", "middle");
+      textEl(svg, W / 2, H / 2, "Belum ada data — unggah CSV atau tambahkan baris", 12, "#8b95a7", "middle");
       return;
     }
 
@@ -972,27 +999,27 @@
 
     var defs = document.createElementNS(SVGNS, "defs");
     defs.innerHTML = '<linearGradient id="curveGrad" x1="0" y1="0" x2="1" y2="0">' +
-      '<stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#0984e3"/>' +
+      '<stop offset="0%" stop-color="#8b6bff"/><stop offset="100%" stop-color="#22304a"/>' +
       '</linearGradient>';
     svg.appendChild(defs);
 
     var yt = niceTicks(ymin, ymax, 5);
     yt.forEach(function (t) {
-      svg.appendChild(lineEl(m.l, Y(t), W - m.r, Y(t), "#eef1f4", 1));
-      textEl(svg, m.l - 8, Y(t) + 3.5, (Math.abs(t) < 10 ? t.toFixed(1) : t.toFixed(0)), 10.5, "#95a5a6", "end");
+      svg.appendChild(lineEl(m.l, Y(t), W - m.r, Y(t), "#eceff6", 1));
+      textEl(svg, m.l - 8, Y(t) + 3.5, (Math.abs(t) < 10 ? t.toFixed(1) : t.toFixed(0)), 10.5, "#8b95a7", "end");
     });
 
     var xt = niceTicks(xmin, xmax, 6);
     xt.forEach(function (t) {
-      svg.appendChild(lineEl(X(t), m.t, X(t), H - m.b, "#eef1f4", 1));
-      textEl(svg, X(t), H - m.b + 17, String(Math.round(t * 10) / 10), 10.5, "#95a5a6", "middle");
+      svg.appendChild(lineEl(X(t), m.t, X(t), H - m.b, "#eceff6", 1));
+      textEl(svg, X(t), H - m.b + 17, String(Math.round(t * 10) / 10), 10.5, "#8b95a7", "middle");
     });
 
-    svg.appendChild(lineEl(m.l, H - m.b, W - m.r, H - m.b, "#dfe6e9", 1.2));
-    svg.appendChild(lineEl(m.l, m.t, m.l, H - m.b, "#dfe6e9", 1.2));
+    svg.appendChild(lineEl(m.l, H - m.b, W - m.r, H - m.b, "#dbe2ec", 1.2));
+    svg.appendChild(lineEl(m.l, m.t, m.l, H - m.b, "#dbe2ec", 1.2));
 
-    textEl(svg, W / 2, H - 7, axisLabel(xKey), 11, "#7f8c8d", "middle");
-    var yl = textEl(svg, 14, H / 2, axisLabel(yKey), 11, "#7f8c8d", "middle");
+    textEl(svg, W / 2, H - 7, axisLabel(xKey), 11, "#7b8794", "middle");
+    var yl = textEl(svg, 14, H / 2, axisLabel(yKey), 11, "#7b8794", "middle");
     yl.setAttribute("transform", "rotate(-90 14 " + (H / 2) + ")");
 
     var r = getRange();
@@ -1022,7 +1049,7 @@
       c.setAttribute("cy", Y(p.y));
       c.setAttribute("r", inR ? 4.6 : 3.6);
       c.setAttribute("fill", "#ffffff");
-      c.setAttribute("stroke", inR ? "#0984e3" : "#b2bec3");
+      c.setAttribute("stroke", inR ? "#22304a" : "#c2cad8");
       c.setAttribute("stroke-width", inR ? 2.4 : 1.6);
       svg.appendChild(c);
     });
@@ -1038,7 +1065,7 @@
 
     var pts = stats.used;
     if (!pts.length) {
-      textEl(svg, W / 2, H / 2, "Tidak ada titik dalam rentang", 11.5, "#95a5a6", "middle");
+      textEl(svg, W / 2, H / 2, "Tidak ada titik dalam rentang", 11.5, "#8b95a7", "middle");
       return;
     }
 
@@ -1062,15 +1089,15 @@
 
     var yt = niceTicks(ymin, ymax, 4);
     yt.forEach(function (t) {
-      svg.appendChild(lineEl(m.l, Y(t), W - m.r, Y(t), "#eef1f4", 1));
-      textEl(svg, m.l - 7, Y(t) + 3.5, t.toFixed(1), 10, "#95a5a6", "end");
+      svg.appendChild(lineEl(m.l, Y(t), W - m.r, Y(t), "#eceff6", 1));
+      textEl(svg, m.l - 7, Y(t) + 3.5, t.toFixed(1), 10, "#8b95a7", "end");
     });
 
-    svg.appendChild(lineEl(m.l, H - m.b, W - m.r, H - m.b, "#dfe6e9", 1.2));
-    svg.appendChild(lineEl(m.l, m.t, m.l, H - m.b, "#dfe6e9", 1.2));
+    svg.appendChild(lineEl(m.l, H - m.b, W - m.r, H - m.b, "#dbe2ec", 1.2));
+    svg.appendChild(lineEl(m.l, m.t, m.l, H - m.b, "#dbe2ec", 1.2));
     svg.appendChild(lineEl(m.l, Y(0), W - m.r, Y(0), "#4b2cbf", 1.2));
 
-    textEl(svg, W / 2, H - 6, axisLabel(xKey), 10.5, "#7f8c8d", "middle");
+    textEl(svg, W / 2, H - 6, axisLabel(xKey), 10.5, "#7b8794", "middle");
 
     pts.forEach(function (p) {
       var ok = Math.abs(p.res) <= EPS;
