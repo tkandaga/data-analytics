@@ -193,6 +193,7 @@
   }
   .exp-btn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-soft);}
   .exp-btn svg{width:16px;height:16px;}
+  .exp-btn:disabled{opacity:.55;cursor:progress;}
 
   /* table */
   .table-tools{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
@@ -469,6 +470,14 @@
                   <path d="M4 19h16"/>
                 </svg>
                 PDF
+              </button>
+              <button class="exp-btn" id="expPng" title="Unduh gambar dashboard (tanpa panel kiri)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="16" rx="2"/>
+                  <circle cx="8.5" cy="9.5" r="1.6"/>
+                  <path d="M21 16l-5-5-9 9"/>
+                </svg>
+                <span>Gambar</span>
               </button>
             </div>
           </div>
@@ -1454,6 +1463,53 @@
   }
 
   /* ============================================================
+     EXPORT GAMBAR (tanpa panel kiri)
+     ============================================================ */
+  function loadHtml2Canvas() {
+    return new Promise(function (resolve, reject) {
+      if (window.html2canvas) { resolve(window.html2canvas); return; }
+      var s = document.createElement("script");
+      s.src = "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js";
+      s.onload = function () {
+        if (window.html2canvas) resolve(window.html2canvas);
+        else reject(new Error("pustaka gambar tidak terbaca"));
+      };
+      s.onerror = function () { reject(new Error("pustaka gambar gagal dimuat")); };
+      document.head.appendChild(s);
+    });
+  }
+
+  function exportPNG() {
+    var btn = $("expPng");
+    var lbl = btn.querySelector("span");
+    if (btn.disabled) return;
+    btn.disabled = true;
+    lbl.textContent = "Menyiapkan";
+
+    loadHtml2Canvas().then(function (h2c) {
+      return h2c(document.querySelector(".main"), {
+        backgroundColor: "#eef1f7",
+        scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        logging: false
+      });
+    }).then(function (canvas) {
+      var a = document.createElement("a");
+      a.href = canvas.toDataURL("image/png");
+      a.download = "dashboard-modeling.png";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }).catch(function (err) {
+      alert("Ekspor gambar gagal: " + (err && err.message ? err.message : "kesalahan tidak diketahui"));
+    }).then(function () {
+      btn.disabled = false;
+      lbl.textContent = "Gambar";
+    });
+  }
+
+  /* ============================================================
      EVENTS
      ============================================================ */
   $("varX").addEventListener("change", function () {
@@ -1560,6 +1616,7 @@
 
   $("expExcel").addEventListener("click", exportCSV);
   $("expPdf").addEventListener("click", function () { window.print(); });
+  $("expPng").addEventListener("click", exportPNG);
 
   window.addEventListener("resize", function () {
     drawMain();
