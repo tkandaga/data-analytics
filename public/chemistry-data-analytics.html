@@ -264,13 +264,17 @@
     .brand{height:32px;}
   }
 </style>
+<link rel="stylesheet" href="/report-theme.css">
 </head>
 <body>
 
 <div class="app">
   <!-- ================= SIDEBAR ================= -->
   <aside class="sidebar">
-    <div class="sb-head"><span class="dot"></span>Dashboard</div>
+    <div class="sb-head">
+      <img class="brand" src="https://media.base44.com/images/public/6ab290c11265ad626905aac0/b38dd8bff_Logo_UT-transparan.png" alt="Universitas Terbuka">
+      <span>Dashboard</span>
+    </div>
 
     <div class="sb-item">
       <div class="sb-label">
@@ -341,24 +345,21 @@
   <!-- ================= MAIN ================= -->
   <main class="main">
     <header class="topbar">
-      <img class="brand" src="https://media.base44.com/images/public/6ab290c11265ad626905aac0/b38dd8bff_Logo_UT-transparan.png" alt="Universitas Terbuka">
+      <div class="blob-a"></div>
+      <div class="blob-b"></div>
+      <div class="dotgrid"></div>
       <div class="titlewrap">
-        <h1>
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-            <path d="M4 20V9M10 20V4M16 20v-7M22 20V7"/>
-          </svg>
-          Mathematical Modeling Dashboard
-        </h1>
+        <h1>Mathematical Modeling Dashboard</h1>
+        <div class="rep-divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
         <p>Dari Data Menuju Model, Validasi, dan Interpretasi</p>
       </div>
-      <div class="topbar-right"></div>
     </header>
 
     <div class="content">
       <!-- METRICS -->
       <div class="metrics">
         <div class="metric">
-          <div class="ic" style="background:#5D3FD3">
+          <div class="ic">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 12h4l3 8 4-16 3 8h4"/>
             </svg>
@@ -367,7 +368,7 @@
         </div>
 
         <div class="metric">
-          <div class="ic" style="background:#2F6BFF">
+          <div class="ic">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2"/>
             </svg>
@@ -376,7 +377,7 @@
         </div>
 
         <div class="metric">
-          <div class="ic" style="background:#12A594">
+          <div class="ic">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
               <path d="M5 20V12M12 20V5M19 20v-5"/>
             </svg>
@@ -385,7 +386,7 @@
         </div>
 
         <div class="metric">
-          <div class="ic" style="background:#F2994A">
+          <div class="ic">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/>
             </svg>
@@ -394,7 +395,7 @@
         </div>
 
         <div class="metric">
-          <div class="ic" style="background:#D6336C">
+          <div class="ic">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
               <path d="M4 7h16M4 12h16M4 17h16"/>
               <circle cx="9" cy="7" r="2" fill="currentColor" stroke="none"/>
@@ -511,7 +512,7 @@
       </section>
 
       <!-- INTERPRETATION -->
-      <section class="card">
+      <section class="card interp-card">
         <h2>Interpretasi</h2>
         <div id="interp"></div>
       </section>
