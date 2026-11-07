@@ -9,6 +9,7 @@ import ScrollToTop from './components/ScrollToTop';
 // Add page imports here
 import AnalyticsStudio from './pages/AnalyticsStudio';
 import Dashboard from './pages/Dashboard';
+import GeneralDashboard from './pages/GeneralDashboard';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -39,6 +40,7 @@ const AuthenticatedApp = () => {
       {/* Add your page Route elements here */}
       <Route path="/" element={<AnalyticsStudio />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/general" element={<GeneralDashboard />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

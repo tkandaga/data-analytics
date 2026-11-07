@@ -14,7 +14,7 @@ export default function AnalyticsStudio() {
   const [step, setStep] = useState(0);
   const [dataset, setDataset] = useState(initial.dataset);
   const [themeId, setThemeId] = useState(initial.themeId);
-  const [type, setType] = useState("modeling");
+  const [type, setType] = useState(initial.type || "modeling");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -31,7 +31,7 @@ export default function AnalyticsStudio() {
   const finish = () => {
     const keys = pickKeys(dataset.columns);
     saveStudio({ dataset, themeId, type, xKey: keys.xKey, yKey: keys.yKey });
-    navigate("/dashboard");
+    navigate(type === "general" ? "/general" : "/dashboard");
   };
 
   return (

@@ -23,7 +23,7 @@ export const DASHBOARD_TYPES = [
     id: "general",
     name: "General Dashboard",
     desc: "Ringkasan statistik deskriptif dan visualisasi tren data secara umum.",
-    ready: false,
+    ready: true,
   },
   {
     id: "interpretative",
