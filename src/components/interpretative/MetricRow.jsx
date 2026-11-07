@@ -37,7 +37,7 @@ export default function MetricRow({ analysis }) {
   ];
 
   return (
-    <div className="grid gap-3 rounded-2xl bg-[#F4F3F8] p-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+    <div className="grid gap-3 rounded-2xl border border-[#E2DEF3] bg-[#EDEAF7] p-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
       {cards.map((card) => {
         const Icon = card.icon;
         return (
