@@ -9,6 +9,7 @@ export default function GeneralKpi({ rows, stats, uniqueGroups, measureLabel, di
       value: fmtNum(rows),
       sub: "baris dalam dataset",
       icon: Database,
+      ink: "#1C69C6",
       mix: 0,
     },
     {
@@ -16,6 +17,7 @@ export default function GeneralKpi({ rows, stats, uniqueGroups, measureLabel, di
       value: stats ? fmtNum(stats.sum) : "–",
       sub: unit || "akumulasi nilai",
       icon: Sigma,
+      ink: "#D6336C",
       mix: 16,
     },
     {
@@ -23,6 +25,7 @@ export default function GeneralKpi({ rows, stats, uniqueGroups, measureLabel, di
       value: stats ? fmtNum(stats.mean) : "–",
       sub: stats ? `median ${fmtNum(stats.median)}` : "tanpa kolom numerik",
       icon: Activity,
+      ink: "#0E9488",
       mix: 32,
     },
     {
@@ -30,6 +33,7 @@ export default function GeneralKpi({ rows, stats, uniqueGroups, measureLabel, di
       value: stats ? fmtNum(stats.max) : "–",
       sub: unit || "nilai tertinggi",
       icon: ArrowUpRight,
+      ink: "#C2410C",
       mix: 50,
     },
     {
@@ -37,6 +41,7 @@ export default function GeneralKpi({ rows, stats, uniqueGroups, measureLabel, di
       value: stats ? fmtNum(stats.min) : "–",
       sub: unit || "nilai terendah",
       icon: ArrowDownRight,
+      ink: "#FFD98A",
       solid: "var(--accent)",
     },
     {
@@ -44,6 +49,7 @@ export default function GeneralKpi({ rows, stats, uniqueGroups, measureLabel, di
       value: uniqueGroups === null || uniqueGroups === undefined ? "–" : fmtNum(uniqueGroups),
       sub: dimLabel || "kolom dimensi",
       icon: Layers,
+      ink: "#7ED0F5",
       solid: "var(--accent-ink)",
     },
   ];
@@ -77,8 +83,8 @@ export default function GeneralKpi({ rows, stats, uniqueGroups, measureLabel, di
               <span
                 className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
                 style={{
-                  background: dark ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.72)",
-                  color: main,
+                  background: dark ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.78)",
+                  color: card.ink,
                 }}
               >
                 <Icon className="h-4 w-4" />
