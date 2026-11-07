@@ -288,7 +288,7 @@ export default function Dashboard() {
                   <div className="grid items-stretch gap-4 lg:grid-cols-12">
                     <div className="flex flex-col gap-4 lg:col-span-8">
                       {leftIds.map((id) => (
-                        <div key={id} className={id === "info" ? "flex flex-1 flex-col" : ""}>
+                        <div key={id} className={id === "info" ? "mt-auto" : ""}>
                           {sections[id]}
                         </div>
                       ))}
