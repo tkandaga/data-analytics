@@ -14,7 +14,7 @@ export default function ModelSummary({ modelId, mode, params, ctx, onParamChange
         className="rounded-xl border border-[#F5E2B5] bg-[#FFF8E9] px-4 py-4 text-center font-serif text-[17px] leading-relaxed text-[#17254B]"
         dangerouslySetInnerHTML={{ __html: model.eq(params) }}
       />
-      <div className="mt-5 grid gap-x-8 gap-y-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-5 grid gap-4">
         {model.params.map((pr, i) => {
           const lo = pr.lo(ctx);
           const hi = pr.hi(ctx);

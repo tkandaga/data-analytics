@@ -22,6 +22,16 @@ import { loadStudio, saveStudio, themeById } from "@/lib/studio";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 
+const SPAN = {
+  kpi: "lg:col-span-12",
+  chart: "lg:col-span-8",
+  model: "lg:col-span-4",
+  residual: "lg:col-span-6",
+  info: "lg:col-span-6",
+  table: "lg:col-span-12",
+  interp: "lg:col-span-12",
+};
+
 export default function Dashboard() {
   const initial = useMemo(() => loadStudio(), []);
   const [dataset, setDataset] = useState(initial.dataset);
@@ -251,7 +261,7 @@ export default function Dashboard() {
           <header className="relative overflow-hidden px-5 pb-6 pt-9 text-center">
             <div className="pointer-events-none absolute -left-40 -top-72 h-[520px] w-[520px] rounded-full bg-[#EAEBFF]" />
             <div className="pointer-events-none absolute right-8 top-6 hidden h-24 w-32 [background-image:radial-gradient(circle_at_3px_3px,#CBC8EE_3px,transparent_3.2px)] [background-size:22px_22px] md:block" />
-            <div className="relative">
+            <div className="relative mx-auto w-full max-w-[1200px]">
               <h1 className="text-2xl font-extrabold tracking-tight text-[#17254B] sm:text-3xl">
                 Mathematical Modeling Dashboard
               </h1>
@@ -266,9 +276,16 @@ export default function Dashboard() {
             </div>
           </header>
 
-          <div ref={contentRef} className="flex flex-col gap-4 px-5 pb-12 sm:px-7">
+          <div
+            ref={contentRef}
+            className="mx-auto flex w-full max-w-[1200px] flex-col gap-4 px-5 pb-12 sm:px-7 lg:grid lg:grid-flow-row-dense lg:grid-cols-12 lg:items-start"
+          >
             {shown.length ? (
-              shown.map((id) => <div key={id}>{sections[id]}</div>)
+              shown.map((id) => (
+                <div key={id} className={SPAN[id]}>
+                  {sections[id]}
+                </div>
+              ))
             ) : (
               <div className="rounded-2xl border border-dashed border-[#DFE4F7] bg-white py-20 text-center">
                 <p className="text-sm text-[#7B8794]">
