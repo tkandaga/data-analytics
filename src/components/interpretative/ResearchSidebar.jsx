@@ -1,22 +1,32 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {
+  Activity,
   ArrowLeft,
+  ArrowLeftRight,
   BarChart3,
+  ClipboardCheck,
   FileText,
   GitCompare,
+  Layers,
   PieChart,
   ScatterChart,
   Sparkles,
   Table2,
+  TrendingUp,
 } from "lucide-react";
 
 export const NAV = [
   { id: "overview", label: "Ikhtisar", icon: BarChart3 },
   { id: "deskriptif", label: "Statistik", icon: Table2 },
   { id: "distribusi", label: "Distribusi", icon: PieChart },
+  { id: "normalitas", label: "Normalitas", icon: Activity },
   { id: "perbandingan", label: "Perbandingan", icon: GitCompare },
+  { id: "korelasi", label: "Korelasi", icon: TrendingUp },
   { id: "relasi", label: "Relasi", icon: ScatterChart },
+  { id: "homogenitas", label: "Homogenitas", icon: Layers },
+  { id: "ujibeda", label: "Uji Beda", icon: ArrowLeftRight },
+  { id: "instrumen", label: "Instrumen", icon: ClipboardCheck },
   { id: "interpretasi", label: "Interpretasi", icon: Sparkles },
   { id: "laporan", label: "Laporan", icon: FileText },
 ];

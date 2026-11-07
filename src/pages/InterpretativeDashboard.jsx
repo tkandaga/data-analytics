@@ -5,7 +5,12 @@ import ResearchSidebar from "@/components/interpretative/ResearchSidebar";
 import MetricRow from "@/components/interpretative/MetricRow";
 import DescriptiveTable from "@/components/interpretative/DescriptiveTable";
 import DistributionHistogram from "@/components/interpretative/DistributionHistogram";
-import ComparisonChart from "@/components/interpretative/ComparisonChart";
+import NormalityPanel from "@/components/statistics/NormalityPanel";
+import GroupComparisonPanel from "@/components/statistics/GroupComparisonPanel";
+import CorrelationPanel from "@/components/statistics/CorrelationPanel";
+import HomogeneityPanel from "@/components/statistics/HomogeneityPanel";
+import MeanTestPanel from "@/components/statistics/MeanTestPanel";
+import InstrumentPanel from "@/components/statistics/InstrumentPanel";
 import RelationshipScatter from "@/components/interpretative/RelationshipScatter";
 import CategoryDonut from "@/components/interpretative/CategoryDonut";
 import LatestRecords from "@/components/interpretative/LatestRecords";
@@ -122,13 +127,21 @@ export default function InterpretativeDashboard() {
                   </div>
                 </section>
 
+                <section id="normalitas" className="min-w-0 scroll-mt-4">
+                  <NormalityPanel analysis={analysis} />
+                </section>
+
                 <section id="perbandingan" className="grid scroll-mt-4 items-stretch gap-4 xl:grid-cols-12">
                   <div className="flex min-w-0 flex-col xl:col-span-7">
-                    <ComparisonChart analysis={analysis} />
+                    <GroupComparisonPanel analysis={analysis} />
                   </div>
                   <div className="flex min-w-0 flex-col xl:col-span-5">
                     <LatestRecords analysis={analysis} />
                   </div>
+                </section>
+
+                <section id="korelasi" className="min-w-0 scroll-mt-4">
+                  <CorrelationPanel analysis={analysis} />
                 </section>
 
                 <section id="relasi" className="grid scroll-mt-4 items-stretch gap-4 xl:grid-cols-12">
@@ -138,6 +151,18 @@ export default function InterpretativeDashboard() {
                   <div className="flex min-w-0 flex-col xl:col-span-5">
                     <RecordsTable analysis={analysis} />
                   </div>
+                </section>
+
+                <section id="homogenitas" className="min-w-0 scroll-mt-4">
+                  <HomogeneityPanel analysis={analysis} />
+                </section>
+
+                <section id="ujibeda" className="min-w-0 scroll-mt-4">
+                  <MeanTestPanel analysis={analysis} />
+                </section>
+
+                <section id="instrumen" className="min-w-0 scroll-mt-4">
+                  <InstrumentPanel analysis={analysis} />
                 </section>
 
                 <section id="interpretasi" className="min-w-0 scroll-mt-4">
