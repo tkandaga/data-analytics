@@ -4,6 +4,11 @@ import NarrativeCard from "@/components/interpretative/NarrativeCard";
 import DistributionHistogram from "@/components/interpretative/DistributionHistogram";
 import RelationshipScatter from "@/components/interpretative/RelationshipScatter";
 import StatStack from "@/components/interpretative/StatStack";
+import {
+  comparisonInterpretation,
+  descriptiveInterpretation,
+  executiveInterpretation,
+} from "@/lib/interpretationText";
 
 export default function ReportNarrative({ analysis }) {
   const { report } = analysis;
@@ -15,7 +20,7 @@ export default function ReportNarrative({ analysis }) {
           <NarrativeCard
             title="Executive Interpretation"
             icon={Trophy}
-            text={report.executive.text}
+            paragraphs={executiveInterpretation(analysis)}
             quote={report.executive.quote}
           />
         </div>
@@ -23,34 +28,31 @@ export default function ReportNarrative({ analysis }) {
           <NarrativeCard
             title="Interpretasi Statistik Deskriptif"
             icon={BarChart3}
-            text={report.descriptive.text}
+            paragraphs={descriptiveInterpretation(analysis)}
             metrics={report.descriptive.metrics}
           />
         </div>
       </div>
 
       <div className="grid gap-4 xl:grid-cols-12">
-        <div className="min-w-0 xl:col-span-5">
-          <DistributionHistogram analysis={analysis} compact />
-        </div>
-        <div className="min-w-0 xl:col-span-4">
+        <div className="min-w-0 xl:col-span-7">
           <NarrativeCard
             title="Interpretasi Perbandingan Kelompok"
             icon={GitCompare}
-            text={report.comparison.text}
+            paragraphs={comparisonInterpretation(analysis)}
             metrics={report.comparison.metrics}
           />
         </div>
-        <div className="min-w-0 xl:col-span-3">
-          <StatStack analysis={analysis} />
+        <div className="min-w-0 xl:col-span-5">
+          <DistributionHistogram analysis={analysis} compact />
         </div>
       </div>
 
       <div className="grid gap-4 xl:grid-cols-12">
-        <div className="min-w-0 xl:col-span-7">
+        <div className="min-w-0 xl:col-span-5">
           <RelationshipScatter analysis={analysis} />
         </div>
-        <div className="min-w-0 xl:col-span-5">
+        <div className="min-w-0 xl:col-span-4">
           <NarrativeCard
             title="Implikasi Riset"
             icon={Lightbulb}
@@ -68,6 +70,9 @@ export default function ReportNarrative({ analysis }) {
               </div>
             }
           />
+        </div>
+        <div className="min-w-0 xl:col-span-3">
+          <StatStack analysis={analysis} />
         </div>
       </div>
     </div>

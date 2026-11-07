@@ -1,8 +1,10 @@
 import React from "react";
 import { ArrowLeft, Quote } from "lucide-react";
+import { conclusionInterpretation } from "@/lib/interpretationText";
 
 export default function ReportConclusion({ analysis, onBack }) {
   const { report } = analysis;
+  const paragraphs = conclusionInterpretation(analysis);
 
   return (
     <section className="rounded-2xl border border-[#E6E4F5] bg-gradient-to-br from-white via-[#FBFAFF] to-[#F3F1FF] p-5">
@@ -12,7 +14,13 @@ export default function ReportConclusion({ analysis, onBack }) {
         </span>
         <h3 className="text-[12.5px] font-extrabold uppercase tracking-[0.06em] text-[#1E1B4B]">Kesimpulan</h3>
       </div>
-      <p className="mt-2.5 text-[12px] leading-relaxed text-[#3F3D56]">{report.conclusion.text}</p>
+      <div className="mt-2.5 space-y-2.5">
+        {paragraphs.map((paragraph, index) => (
+          <p key={index} className="text-[12px] leading-[1.8] text-[#3F3D56]">
+            {paragraph}
+          </p>
+        ))}
+      </div>
       <blockquote className="mt-3 rounded-xl border-l-[3px] border-[#8B5CF6] bg-white px-3.5 py-3 text-[11.5px] font-medium italic leading-relaxed text-[#4C1D95]">
         {report.conclusion.quote}
       </blockquote>

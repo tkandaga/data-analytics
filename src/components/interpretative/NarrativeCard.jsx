@@ -1,6 +1,7 @@
 import React from "react";
 
-export default function NarrativeCard({ title, icon: Icon, text, quote, metrics, footer }) {
+export default function NarrativeCard({ title, icon: Icon, text, paragraphs, quote, metrics, footer }) {
+  const blocks = paragraphs?.length ? paragraphs : text ? [text] : [];
   return (
     <section className="flex h-full flex-col rounded-2xl border border-[#E6E4F5] bg-white/90 p-5 shadow-[0_14px_36px_-30px_rgba(30,27,75,0.6)]">
       <div className="flex items-start gap-2.5">
@@ -12,7 +13,13 @@ export default function NarrativeCard({ title, icon: Icon, text, quote, metrics,
         <h2 className="pt-1 text-[14px] font-extrabold leading-tight text-[#1E1B4B]">{title}</h2>
       </div>
 
-      <p className="mt-3 text-[12px] leading-relaxed text-[#3F3D56]">{text}</p>
+      <div className="mt-3 space-y-2.5">
+        {blocks.map((block, index) => (
+          <p key={index} className="text-[12px] leading-[1.8] text-[#3F3D56]">
+            {block}
+          </p>
+        ))}
+      </div>
 
       {quote ? (
         <blockquote className="mt-3 rounded-xl border-l-[3px] border-[#8B5CF6] bg-[#F7F5FF] px-3 py-2.5 text-[11.5px] font-medium italic leading-relaxed text-[#4C1D95]">
