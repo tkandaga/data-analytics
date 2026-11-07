@@ -16,24 +16,24 @@ export default function CategoryBars({ groups, topN = 8 }) {
       {rows.length ? (
         <ul className="flex flex-col gap-3">
           {rows.map((r, i) => (
-            <li key={r.name}>
-              <div className="flex items-baseline justify-between gap-3 text-[12px]">
-                <span className="flex min-w-0 items-center gap-2">
-                  <span className="w-4 shrink-0 text-[10.5px] font-bold text-[#A6AFC4]">{i + 1}</span>
-                  <span className="truncate font-semibold text-[#17254B]" title={r.name}>
-                    {r.name}
+            <li key={r.name} className="flex items-center gap-2.5">
+              <span className="w-4 shrink-0 text-center text-[11px] font-extrabold text-[#A6AFC4]">{i + 1}</span>
+              <div className="min-w-0 flex-1">
+                <span className="block truncate text-[12px] font-semibold text-[#17254B]" title={r.name}>
+                  {r.name}
+                </span>
+                <div className="mt-1.5 h-8 w-full rounded-lg bg-[#F1F3FB] p-[3px]">
+                  <span
+                    className="flex h-full items-center justify-end overflow-hidden whitespace-nowrap rounded-md px-2.5 text-[11.5px] font-bold text-white"
+                    style={{
+                      width: `${Math.max(6, (Math.abs(r.value) / max) * 100)}%`,
+                      background: "var(--accent)",
+                    }}
+                  >
+                    {fmtNum(r.value)}
+                    {unit}
                   </span>
-                </span>
-                <span className="shrink-0 font-bold text-[#17254B]">
-                  {fmtNum(r.value)}
-                  {unit}
-                </span>
-              </div>
-              <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-[#F1F3FB]">
-                <span
-                  className="block h-full rounded-full"
-                  style={{ width: `${Math.max(3, (Math.abs(r.value) / max) * 100)}%`, background: "var(--accent)" }}
-                />
+                </div>
               </div>
             </li>
           ))}
