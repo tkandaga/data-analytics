@@ -420,8 +420,7 @@
             </div>
           </section>
 
-          <div class="two-col">
-            <div class="mini-stack">
+          <div class="mini-stack">
               <div class="card mini-card">
                 <h3>Tanggal Analisis</h3>
                 <div class="big" id="analysisDate">–</div>
@@ -466,16 +465,6 @@
                 </div>
               </div>
             </div>
-
-            <section class="card">
-              <h2>Residual dan Batas Toleransi</h2>
-              <div id="resChart"></div>
-              <div class="legend">
-                <div class="item"><span class="dot" style="border-color:var(--purple);background:#efeafc"></span> Residu (y − ŷ)</div>
-                <div class="item"><span class="sw" style="background:var(--green);height:2px"></span> ±ε</div>
-              </div>
-            </section>
-          </div>
         </div>
 
         <aside class="rside">
@@ -483,6 +472,15 @@
             <h2>Ringkasan Model</h2>
             <div class="eqbox" id="eqBox"></div>
             <div id="paramSliders"></div>
+          </section>
+
+          <section class="card residual-card">
+            <h2>Residual dan Batas Toleransi</h2>
+            <div id="resChart"></div>
+            <div class="legend">
+              <div class="item"><span class="dot" style="border-color:var(--purple);background:#efeafc"></span> Residu (y − ŷ)</div>
+              <div class="item"><span class="sw" style="background:var(--green);height:2px"></span> ±ε</div>
+            </div>
           </section>
         </aside>
       </div>

@@ -151,7 +151,7 @@ body{
 .mid{grid-template-columns:minmax(0,1fr) 300px;gap:16px;}
 .cards{gap:16px;}
 .two-col{gap:16px;grid-template-columns:.72fr 1.28fr;}
-.mini-stack{display:flex;flex-direction:column;gap:16px;min-width:0;}
+.mini-stack{display:grid;grid-template-columns:1fr 1fr;gap:16px;min-width:0;}
 
 .card{
   background:#fff;border:1px solid var(--border);border-radius:14px;
@@ -188,7 +188,9 @@ body{
 .slider-row input[type=range]{accent-color:var(--purple);}
 
 /* ============ KARTU KANAN ============ */
-.rside{gap:16px;}
+.rside{gap:16px;align-content:start;}
+.rside .legend{font-size:11px;gap:10px;flex-wrap:wrap;}
+.rside .legend .sw{width:14px;}
 .mini-card{
   padding:0;border-radius:14px;overflow:hidden;border:1px solid var(--border);
   background:#fff;box-shadow:0 1px 0 rgba(23,37,75,.02);
