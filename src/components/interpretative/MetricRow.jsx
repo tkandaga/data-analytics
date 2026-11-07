@@ -12,6 +12,16 @@ const TONES = {
   rose: "bg-[#FFE4E6] text-[#E11D48]",
 };
 
+// Enam variasi warna latar dalam keluarga tema violet.
+const CARD_BG = {
+  blue: "#E7E9FB",
+  purple: "#EDE6FA",
+  green: "#E4E2FA",
+  amber: "#F3E9F8",
+  teal: "#E9EBFC",
+  rose: "#F5E9F4",
+};
+
 export default function MetricRow({ analysis }) {
   const { stats, totalRows, profiles, findings, completeness, effectSize } = analysis;
 
@@ -44,7 +54,7 @@ export default function MetricRow({ analysis }) {
           <div
             key={card.label}
             className="rounded-2xl border border-[#E2DEF3] p-3.5 shadow-[0_12px_28px_-26px_rgba(30,27,75,0.45)]"
-            style={{ backgroundColor: "#EDEAF7" }}
+            style={{ backgroundColor: CARD_BG[card.tone] }}
           >
             <div className="flex items-start justify-between gap-2">
               <span className="text-[10px] font-bold uppercase leading-tight tracking-[0.07em] text-[#6B7280]">
