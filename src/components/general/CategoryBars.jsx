@@ -19,19 +19,21 @@ export default function CategoryBars({ groups, topN = 8 }) {
             <li key={r.name} className="flex items-center gap-2.5">
               <span className="w-4 shrink-0 text-center text-[11px] font-extrabold text-[#A6AFC4]">{i + 1}</span>
               <div className="min-w-0 flex-1">
-                <span className="block truncate text-[12px] font-semibold text-[#17254B]" title={r.name}>
-                  {r.name}
-                </span>
-                <div className="mt-1.5 h-8 w-full rounded-lg bg-[#F1F3FB] p-[3px]">
+                <div className="h-8 w-full rounded-lg bg-[#F1F3FB] p-[3px]">
                   <span
-                    className="flex h-full items-center justify-end overflow-hidden whitespace-nowrap rounded-md px-2.5 text-[11.5px] font-bold text-white"
+                    className="flex h-full items-center justify-between gap-2 overflow-hidden whitespace-nowrap rounded-md px-2.5 text-[11.5px] text-white"
                     style={{
-                      width: `${Math.max(6, (Math.abs(r.value) / max) * 100)}%`,
+                      width: `${Math.max(12, (Math.abs(r.value) / max) * 100)}%`,
                       background: "var(--accent)",
                     }}
                   >
-                    {fmtNum(r.value)}
-                    {unit}
+                    <span className="truncate font-semibold" title={r.name}>
+                      {r.name}
+                    </span>
+                    <span className="shrink-0 font-bold">
+                      {fmtNum(r.value)}
+                      {unit}
+                    </span>
                   </span>
                 </div>
               </div>
