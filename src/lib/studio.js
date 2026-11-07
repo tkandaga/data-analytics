@@ -3,7 +3,7 @@ import { DEFAULT_COLUMNS, DEFAULT_ROWS } from "@/lib/modeling";
 const KEY = "chem_studio_v1";
 
 export const THEMES = [
-  { id: "violet", name: "Violet", accent: "#6430DA", soft: "#F2EDFF", ink: "#4A22B8" },
+  { id: "violet", name: "Violet", accent: "#8453F5", soft: "#E2D4FD", ink: "#1D1C65" },
   { id: "blue", name: "Biru", accent: "#1C69C6", soft: "#E9F3FF", ink: "#155199" },
   { id: "teal", name: "Teal", accent: "#0E9488", soft: "#E6F7F4", ink: "#0B7268" },
   { id: "emerald", name: "Hijau", accent: "#178D65", soft: "#E7F5EE", ink: "#106B4C" },
