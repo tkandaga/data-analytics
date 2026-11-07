@@ -110,22 +110,28 @@ export default function GeneralDashboard() {
         />
 
         <main className="min-w-0">
-          <header className="border-b border-[#E9ECF8] bg-white/70 px-5 py-5 backdrop-blur sm:px-7">
+          <header
+            className="relative overflow-hidden border-b border-white/10 px-5 py-6 sm:px-7"
+            style={{
+              background:
+                "radial-gradient(circle at 88% -30%, color-mix(in srgb, var(--accent) 62%, transparent) 0%, transparent 58%), linear-gradient(115deg, var(--accent-ink) 0%, color-mix(in srgb, var(--accent) 55%, var(--accent-ink)) 52%, var(--accent-ink) 100%)",
+            }}
+          >
             <div className="mx-auto flex w-full max-w-[1240px] flex-wrap items-start justify-between gap-3">
               <div>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--accent-soft)] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--accent-ink)]">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white ring-1 ring-inset ring-white/20">
                   <Sparkles className="h-3 w-3" /> General Dashboard
                 </span>
-                <h1 className="mt-2.5 text-xl font-extrabold uppercase tracking-tight text-[#17254B] sm:text-2xl">
+                <h1 className="mt-2.5 text-xl font-extrabold uppercase tracking-tight text-white sm:text-2xl">
                   Data Analytics Dashboard
                 </h1>
-                <p className="mt-1 text-[12.5px] text-[#697695]">
+                <p className="mt-1 text-[12.5px] text-white/70">
                   Ringkasan umum: tren, distribusi, peringkat, dan statistik deskriptif data Anda.
                 </p>
               </div>
               <Link
                 to="/"
-                className="rounded-lg border border-[#E4E8F6] bg-white px-3 py-2 text-[11.5px] font-bold text-[#17254B] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                className="rounded-lg border border-white/25 bg-white/10 px-3 py-2 text-[11.5px] font-bold text-white transition hover:bg-white hover:text-[var(--accent-ink)]"
               >
                 Unggah data lain
               </Link>
