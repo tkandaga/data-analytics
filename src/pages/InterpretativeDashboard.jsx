@@ -16,6 +16,7 @@ import CategoryDonut from "@/components/interpretative/CategoryDonut";
 import LatestRecords from "@/components/interpretative/LatestRecords";
 import RecordsTable from "@/components/interpretative/RecordsTable";
 import KeyInterpretations from "@/components/interpretative/KeyInterpretations";
+import DetailedInterpretations from "@/components/interpretative/DetailedInterpretations";
 import InsightCard from "@/components/interpretative/InsightCard";
 import ReportView from "@/components/interpretative/ReportView";
 import { buildAnalysis } from "@/lib/interpretative";
@@ -167,6 +168,10 @@ export default function InterpretativeDashboard() {
 
                 <section id="interpretasi" className="min-w-0 scroll-mt-4">
                   <KeyInterpretations findings={analysis.findings} />
+                </section>
+
+                <section id="interpretasi-lengkap" className="min-w-0 scroll-mt-4">
+                  <DetailedInterpretations analysis={analysis} />
                 </section>
 
                 <section id="laporan" className="grid scroll-mt-4 items-stretch gap-4 xl:grid-cols-12">

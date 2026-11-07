@@ -202,8 +202,8 @@ export function buildAnalysis(dataset) {
 
   const previewRows = dataset.rows.slice(0, 5).map((row, i) => ({
     id: `R-${String(i + 1).padStart(4, "0")}`,
-    label: row[dim.key] === undefined || row[dim.key] === null ? "–" : String(row[dim.key]),
-    value: toNumber(row[measure.key]),
+    label: row[dim?.key] === undefined || row[dim?.key] === null ? "–" : String(row[dim?.key]),
+    value: measure ? toNumber(row[measure.key]) : null,
     secondary: secondary ? toNumber(row[secondary.key]) : null,
   }));
 
