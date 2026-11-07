@@ -5,6 +5,7 @@ import {
   ArrowLeft,
   ArrowLeftRight,
   BarChart3,
+  Bot,
   ClipboardCheck,
   FileText,
   GitCompare,
@@ -28,6 +29,7 @@ export const NAV = [
   { id: "ujibeda", label: "Uji Beda", icon: ArrowLeftRight },
   { id: "instrumen", label: "Instrumen", icon: ClipboardCheck },
   { id: "interpretasi", label: "Interpretasi", icon: Sparkles },
+  { id: "narasi-ai", label: "Narasi AI", icon: Bot },
   { id: "laporan", label: "Laporan", icon: FileText },
 ];
 
