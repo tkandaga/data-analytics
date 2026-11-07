@@ -37,13 +37,13 @@ export default function MetricRow({ analysis }) {
   ];
 
   return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+    <div className="grid gap-3 rounded-2xl bg-[#F4F3F8] p-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
       {cards.map((card) => {
         const Icon = card.icon;
         return (
           <div
             key={card.label}
-            className="rounded-2xl border border-white/70 bg-white/90 p-3.5 shadow-[0_12px_32px_-26px_rgba(30,27,75,0.75)] backdrop-blur"
+            className="rounded-2xl border border-[#EAE8F3] bg-white p-3.5 shadow-[0_12px_28px_-26px_rgba(30,27,75,0.55)]"
           >
             <div className="flex items-start justify-between gap-2">
               <span className="text-[10px] font-bold uppercase leading-tight tracking-[0.07em] text-[#6B7280]">
