@@ -26,15 +26,15 @@ export default function TrendChart({ groups, chartType, agg, onAggChange }) {
       title={`Tren ${groups.measureLabel || "Data"}`}
       sub={`per ${groups.dimLabel}`}
       right={
-        <div className="flex flex-wrap gap-1 rounded-lg bg-[#F2F4FC] p-1">
+        <div className="flex flex-wrap gap-1 rounded-lg border border-white/60 bg-white p-1">
           {AGGREGATIONS.map((a) => (
             <button
               key={a.id}
               onClick={() => onAggChange(a.id)}
               className={`rounded-md px-2.5 py-1 text-[11px] font-bold transition ${
                 groups.agg === a.id
-                  ? "bg-white text-[var(--accent-ink)] shadow-sm"
-                  : "text-[#7B8794] hover:text-[#17254B]"
+                  ? "bg-[var(--accent)] text-white shadow-sm"
+                  : "text-[#7B8794] hover:text-[var(--accent-ink)]"
               }`}
             >
               {a.label}
