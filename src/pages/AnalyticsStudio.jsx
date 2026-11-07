@@ -31,7 +31,7 @@ export default function AnalyticsStudio() {
   const finish = () => {
     const keys = pickKeys(dataset.columns);
     saveStudio({ dataset, themeId, type, xKey: keys.xKey, yKey: keys.yKey });
-    navigate(type === "general" ? "/general" : "/dashboard");
+    navigate(type === "general" ? "/general" : type === "interpretative" ? "/interpretative" : "/dashboard");
   };
 
   return (

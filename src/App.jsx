@@ -10,6 +10,7 @@ import ScrollToTop from './components/ScrollToTop';
 import AnalyticsStudio from './pages/AnalyticsStudio';
 import Dashboard from './pages/Dashboard';
 import GeneralDashboard from './pages/GeneralDashboard';
+import InterpretativeDashboard from './pages/InterpretativeDashboard';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -41,6 +42,7 @@ const AuthenticatedApp = () => {
       <Route path="/" element={<AnalyticsStudio />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/general" element={<GeneralDashboard />} />
+      <Route path="/interpretative" element={<InterpretativeDashboard />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

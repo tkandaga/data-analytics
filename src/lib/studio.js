@@ -29,7 +29,7 @@ export const DASHBOARD_TYPES = [
     id: "interpretative",
     name: "Interpretative Dashboard",
     desc: "Penjelasan naratif otomatis atas pola dan temuan utama dalam data.",
-    ready: false,
+    ready: true,
   },
 ];
 
