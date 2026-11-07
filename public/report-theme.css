@@ -148,9 +148,10 @@ body{
 .metric .val.small{font-size:15px;font-weight:700;}
 
 /* ============ CARDS ============ */
-.mid{grid-template-columns:minmax(0,1fr) 268px;gap:16px;}
+.mid{grid-template-columns:minmax(0,1fr) 300px;gap:16px;}
 .cards{gap:16px;}
-.two-col{gap:16px;}
+.two-col{gap:16px;grid-template-columns:.72fr 1.28fr;}
+.mini-stack{display:flex;flex-direction:column;gap:16px;min-width:0;}
 
 .card{
   background:#fff;border:1px solid var(--border);border-radius:14px;
@@ -173,6 +174,11 @@ body{
 .legend{color:var(--muted);font-size:12px;}
 
 /* ringkasan model */
+.model-card .eqbox{font-size:14px;padding:14px 10px;}
+.model-card #paramSliders{margin-top:14px;}
+.rside .card{padding:0 16px 16px;}
+.rside .card h2{margin:0 -16px 16px;padding:14px 16px 11px;font-size:15px;}
+.rside .card h2::before{width:11px;height:11px;}
 .eqbox{
   background:var(--formula-bg);border:1px solid var(--formula-border);border-radius:12px;
   color:var(--navy);font-family:Georgia,'Times New Roman',serif;font-size:16px;padding:16px 12px;
@@ -196,12 +202,12 @@ body{
   padding:16px 14px;font-size:20px;font-weight:800;color:var(--navy);
   text-align:center;line-height:1.2;background:#ECE7FE;
 }
-.rside .mini-card:nth-child(2) h3{background:var(--green-hdr);}
-.rside .mini-card:nth-child(2) .big{background:#E7F5EE;}
-.rside .mini-card:nth-child(3) h3{background:var(--amber-hdr);}
-.rside .mini-card:nth-child(3) .big{background:#FFF2DE;}
-.rside .mini-card:nth-child(4) h3{background:#17254B;}
-.rside .mini-card:nth-child(4) .big{background:#EEF2FF;}
+.mini-stack .mini-card:nth-child(2) h3{background:var(--green-hdr);}
+.mini-stack .mini-card:nth-child(2) .big{background:#E7F5EE;}
+.mini-stack .mini-card:nth-child(3) h3{background:var(--amber-hdr);}
+.mini-stack .mini-card:nth-child(3) .big{background:#FFF2DE;}
+.mini-stack .mini-card:nth-child(4) h3{background:#17254B;}
+.mini-stack .mini-card:nth-child(4) .big{background:#EEF2FF;}
 .mini-card .bar{margin:0 16px 14px;height:7px;background:#DBE9F6;border-radius:5px;}
 .mini-card .bar > span{background:var(--green-badge);}
 .mini-card .export-btns{padding:14px;}
