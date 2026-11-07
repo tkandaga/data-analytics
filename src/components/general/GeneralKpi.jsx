@@ -1,6 +1,15 @@
 import React from "react";
-import { Activity, ArrowDownRight, ArrowUpRight, Database, Layers, Sigma } from "lucide-react";
+import { Image } from "@/components/ui/image";
 import { fmtNum } from "@/lib/general";
+
+const ICONS = {
+  data: "https://base44.app/api/apps/6ab290c11265ad626905aac0/files/mp/public/6ab290c11265ad626905aac0/ee0af65d0_kpi-data.png",
+  avg: "https://base44.app/api/apps/6ab290c11265ad626905aac0/files/mp/public/6ab290c11265ad626905aac0/4067c50af_kpi-avg.png",
+  sum: "https://base44.app/api/apps/6ab290c11265ad626905aac0/files/mp/public/6ab290c11265ad626905aac0/b42283a83_kpi-sum.png",
+  max: "https://base44.app/api/apps/6ab290c11265ad626905aac0/files/mp/public/6ab290c11265ad626905aac0/f3fdf6c32_kpi-max.png",
+  min: "https://base44.app/api/apps/6ab290c11265ad626905aac0/files/mp/public/6ab290c11265ad626905aac0/ff949b662_kpi-min.png",
+  uniq: "https://base44.app/api/apps/6ab290c11265ad626905aac0/files/mp/public/6ab290c11265ad626905aac0/fe72d32a1_kpi-uniq.png",
+};
 
 export default function GeneralKpi({ rows, stats, uniqueGroups, measureLabel, dimLabel, unit }) {
   const cards = [
@@ -8,48 +17,42 @@ export default function GeneralKpi({ rows, stats, uniqueGroups, measureLabel, di
       label: "Total Data",
       value: fmtNum(rows),
       sub: "baris dalam dataset",
-      icon: Database,
-      ink: "#1C69C6",
+      img: ICONS.data,
       mix: 0,
     },
     {
       label: `Total ${measureLabel || "Data"}`,
       value: stats ? fmtNum(stats.sum) : "–",
       sub: unit || "akumulasi nilai",
-      icon: Sigma,
-      ink: "#D6336C",
+      img: ICONS.sum,
       mix: 16,
     },
     {
       label: "Rata-rata",
       value: stats ? fmtNum(stats.mean) : "–",
       sub: stats ? `median ${fmtNum(stats.median)}` : "tanpa kolom numerik",
-      icon: Activity,
-      ink: "#0E9488",
+      img: ICONS.avg,
       mix: 32,
     },
     {
       label: "Maksimum",
       value: stats ? fmtNum(stats.max) : "–",
       sub: unit || "nilai tertinggi",
-      icon: ArrowUpRight,
-      ink: "#C2410C",
+      img: ICONS.max,
       mix: 50,
     },
     {
       label: "Minimum",
       value: stats ? fmtNum(stats.min) : "–",
       sub: unit || "nilai terendah",
-      icon: ArrowDownRight,
-      ink: "#FFD98A",
+      img: ICONS.min,
       solid: "var(--accent)",
     },
     {
       label: "Kategori Unik",
       value: uniqueGroups === null || uniqueGroups === undefined ? "–" : fmtNum(uniqueGroups),
       sub: dimLabel || "kolom dimensi",
-      icon: Layers,
-      ink: "#7ED0F5",
+      img: ICONS.uniq,
       solid: "var(--accent-ink)",
     },
   ];
@@ -57,12 +60,11 @@ export default function GeneralKpi({ rows, stats, uniqueGroups, measureLabel, di
   return (
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
       {cards.map((card) => {
-        const Icon = card.icon;
         const dark = Boolean(card.solid);
         const bg = card.solid || `color-mix(in srgb, var(--accent) ${card.mix}%, #ffffff)`;
         const strongInk = card.solid === "var(--accent-ink)";
         const main = dark ? (strongInk ? "var(--accent-soft)" : "#ffffff") : "var(--accent-ink)";
-        const softText = dark ? (strongInk ? "var(--accent-soft)" : "#ffffff") : "var(--accent-ink)";
+        const softText = main;
 
         return (
           <div
@@ -80,15 +82,12 @@ export default function GeneralKpi({ rows, stats, uniqueGroups, measureLabel, di
               >
                 {card.label}
               </span>
-              <span
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
-                style={{
-                  background: dark ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.78)",
-                  color: card.ink,
-                }}
-              >
-                <Icon className="h-4 w-4" />
-              </span>
+              <Image
+                src={card.img}
+                alt={card.label}
+                fittingType="fit"
+                className="h-8 w-8 shrink-0 rounded-md"
+              />
             </div>
             <div className="mt-2 break-words text-xl font-extrabold leading-tight" style={{ color: main }}>
               {card.value}
