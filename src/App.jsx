@@ -12,6 +12,9 @@ import Dashboard from './pages/Dashboard';
 import GeneralDashboard from './pages/GeneralDashboard';
 import InterpretativeDashboard from './pages/InterpretativeDashboard';
 
+// GitHub Pages serves the app from /<repo>/ — routing follows the build base.
+const ROUTER_BASENAME = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
+
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
 
@@ -54,7 +57,7 @@ function App() {
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
-        <Router>
+        <Router basename={ROUTER_BASENAME}>
           <ScrollToTop />
           <AuthenticatedApp />
         </Router>
