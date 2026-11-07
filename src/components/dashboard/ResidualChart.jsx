@@ -30,8 +30,12 @@ export default function ResidualChart({ used, xLabel }) {
   const outside = used.filter((p) => Math.abs(p.res) > EPS).map((p) => ({ x: p.x, y: p.res }));
 
   return (
-    <Panel title="Residual dan Batas Toleransi">
-      <div className="h-[300px] w-full">
+    <Panel
+      title="Residual dan Batas Toleransi"
+      className="flex flex-1 flex-col"
+      bodyClassName="flex flex-1 flex-col"
+    >
+      <div className="min-h-[240px] w-full flex-1">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
             data={used.map((p) => ({ x: p.x, y: p.res }))}

@@ -4,11 +4,11 @@ import { feasibility } from "@/lib/modeling";
 
 function MiniCard({ title, bg, children }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-[#DFE4F7] bg-white">
-      <div className="flex h-9 items-center px-4 text-[10.5px] font-bold uppercase tracking-[0.1em] text-white" style={{ background: bg }}>
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-[#DFE4F7] bg-white">
+      <div className="flex h-9 shrink-0 items-center px-4 text-[10.5px] font-bold uppercase tracking-[0.1em] text-white" style={{ background: bg }}>
         {title}
       </div>
-      <div className="px-4 py-4">{children}</div>
+      <div className="flex flex-1 flex-col justify-center px-4 py-4">{children}</div>
     </div>
   );
 }
@@ -17,7 +17,7 @@ export default function InfoCards({ date, tolPct, n, r2, onExcel, onPdf, onPng, 
   const f = feasibility(r2);
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid flex-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
       <MiniCard title="Tanggal Analisis" bg="#6240C8">
         <div className="rounded-xl bg-[#ECE7FE] py-3 text-center text-xl font-extrabold text-[#17254B]">{date}</div>
       </MiniCard>

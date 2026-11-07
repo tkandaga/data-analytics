@@ -22,15 +22,9 @@ import { loadStudio, saveStudio, themeById } from "@/lib/studio";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 
-const SPAN = {
-  kpi: "lg:col-span-12",
-  chart: "lg:col-span-8 lg:row-span-2",
-  model: "lg:col-span-4",
-  residual: "lg:col-span-4",
-  info: "lg:col-span-12",
-  table: "lg:col-span-12",
-  interp: "lg:col-span-12",
-};
+const WIDE = ["kpi", "table", "interp"];
+const LEFT = ["chart", "info"];
+const RIGHT = ["model", "residual"];
 
 export default function Dashboard() {
   const initial = useMemo(() => loadStudio(), []);
@@ -232,6 +226,10 @@ export default function Dashboard() {
   };
 
   const shown = order.filter((id) => visible[id]);
+  const wideTop = shown.filter((id) => id === "kpi");
+  const leftIds = shown.filter((id) => LEFT.includes(id));
+  const rightIds = shown.filter((id) => RIGHT.includes(id));
+  const wideBottom = shown.filter((id) => WIDE.includes(id) && !wideTop.includes(id));
 
   return (
     <div
@@ -278,14 +276,37 @@ export default function Dashboard() {
 
           <div
             ref={contentRef}
-            className="mx-auto flex w-full max-w-[1200px] flex-col gap-4 px-5 pb-12 sm:px-7 lg:grid lg:grid-flow-row-dense lg:grid-cols-12 lg:items-start"
+            className="mx-auto flex w-full max-w-[1200px] flex-col gap-4 px-5 pb-12 sm:px-7"
           >
             {shown.length ? (
-              shown.map((id) => (
-                <div key={id} className={SPAN[id]}>
-                  {sections[id]}
-                </div>
-              ))
+              <div className="flex flex-col gap-4">
+                {wideTop.map((id) => (
+                  <div key={id}>{sections[id]}</div>
+                ))}
+
+                {(leftIds.length > 0 || rightIds.length > 0) && (
+                  <div className="grid items-stretch gap-4 lg:grid-cols-12">
+                    <div className="flex flex-col gap-4 lg:col-span-8">
+                      {leftIds.map((id) => (
+                        <div key={id} className={id === "info" ? "flex flex-1 flex-col" : ""}>
+                          {sections[id]}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex flex-col gap-4 lg:col-span-4">
+                      {rightIds.map((id) => (
+                        <div key={id} className={id === "residual" ? "flex flex-1 flex-col" : ""}>
+                          {sections[id]}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {wideBottom.map((id) => (
+                  <div key={id}>{sections[id]}</div>
+                ))}
+              </div>
             ) : (
               <div className="rounded-2xl border border-dashed border-[#DFE4F7] bg-white py-20 text-center">
                 <p className="text-sm text-[#7B8794]">

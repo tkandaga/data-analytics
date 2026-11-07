@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Panel({ title, sub, right, tone = "light", children, className = "" }) {
+export default function Panel({ title, sub, right, tone = "light", children, className = "", bodyClassName = "" }) {
   const accent = tone === "accent";
   return (
     <section className={`overflow-hidden rounded-2xl border border-[#DFE4F7] bg-white shadow-[0_1px_0_rgba(23,37,75,0.03)] ${className}`}>
@@ -18,7 +18,7 @@ export default function Panel({ title, sub, right, tone = "light", children, cla
         ) : null}
         {right ? <div className="ml-auto">{right}</div> : null}
       </div>
-      <div className="p-5">{children}</div>
+      <div className={`p-5 ${bodyClassName}`}>{children}</div>
     </section>
   );
 }
