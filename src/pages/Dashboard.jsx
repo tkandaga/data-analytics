@@ -24,10 +24,10 @@ const MONTHS = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "
 
 const SPAN = {
   kpi: "lg:col-span-12",
-  chart: "lg:col-span-8",
+  chart: "lg:col-span-8 lg:row-span-2",
   model: "lg:col-span-4",
-  residual: "lg:col-span-6",
-  info: "lg:col-span-6",
+  residual: "lg:col-span-4",
+  info: "lg:col-span-12",
   table: "lg:col-span-12",
   interp: "lg:col-span-12",
 };

@@ -17,7 +17,7 @@ export default function InfoCards({ date, tolPct, n, r2, onExcel, onPdf, onPng, 
   const f = feasibility(r2);
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       <MiniCard title="Tanggal Analisis" bg="#6240C8">
         <div className="rounded-xl bg-[#ECE7FE] py-3 text-center text-xl font-extrabold text-[#17254B]">{date}</div>
       </MiniCard>

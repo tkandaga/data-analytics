@@ -36,7 +36,7 @@ export default function ModelChart({ points, modelId, params, bounds, xLabel, yL
 
   return (
     <Panel title="Grafik Data dan Model Matematis">
-      <div className="h-[360px] w-full">
+      <div className="h-[420px] w-full">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={curve} margin={{ top: 8, right: 16, bottom: 4, left: 0 }}>
             <CartesianGrid stroke="#EDF1FB" />
