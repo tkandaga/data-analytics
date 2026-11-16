@@ -45,7 +45,7 @@ export default function AnalyticsStudio() {
               className="h-8 w-auto"
             />
             <div>
-              <div className="text-sm font-extrabold text-[#17254B]">Chemistry Data Analytics</div>
+              <div className="text-sm font-extrabold text-[#17254B]">Simple Dashboard Data Analytics</div>
               <div className="text-[11px] text-[#7B8794]">AI Data Studio</div>
             </div>
           </div>
